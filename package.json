@@ -1,0 +1,17 @@
+{
+  "name": "itg-infoskarm-api",
+  "version": "0.0.1",
+  "main": "dist/main.js",
+  "repository": "https://github.com/itggot-joel-eriksson/ITG-Infoskarm-API.git",
+  "author": "Joel Eriksson <joel.eriksson@protonmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "firebase-admin": "^4.1.2",
+    "request": "^2.79.0",
+    "request-promise-native": "^1.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "^7.0.5",
+    "@types/request-promise-native": "^1.0.2"
+  }
+}
