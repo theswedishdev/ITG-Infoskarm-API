@@ -1,17 +1,57 @@
 import * as moment from "moment"
 import * as request from "request-promise-native"
+import { HTTPThrottler } from "../httpthrottler/httpthrottler"
+import { vasttrafikTypes } from "./types"
 
 namespace vasttrafik {
+	export class APIRequester implements HTTPThrottler.HTTPThrottled {
+		public lastTokenRefill: Date
+		public tokens: number
+
+		constructor(public maxTokens: number, public tokensRefillRateInMs: number) {
+			this.lastTokenRefill = new Date(Date.now())
+			this.tokens = maxTokens
+		}
+
+		public refillTokens(): boolean {
+			if ((this.lastTokenRefill.getTime() + this.tokensRefillRateInMs) > Date.now()) {
+				return false
+			} else {
+				this.tokens = this.maxTokens
+				return true
+			}
+		}
+
+		public requestIsAllowed(): boolean {
+			this.refillTokens()
+
+			if (this.tokens > 0) {
+				this.tokens--
+				return true
+			} else {
+				return false
+			}
+		}
+
+		public performRequest(options: request.OptionsWithUrl): Promise<any> {
+			if (!this.requestIsAllowed()) {
+				return Promise.reject(new Error("This request has been HTTPThrottled and will not be handled"))	
+			} else {
+				return request(options).promise()
+			}
+		}
+	}
+
 	export class API {
 		public baseUrl: string = "https://api.vasttrafik.se/bin/rest.exe/v2"
 
-		constructor(private _accessToken: string) {
+		constructor(private _accessToken: string, public apiRequester: vasttrafik.APIRequester) {
 			
 		}
 
-		public getDepartures(stop: string, datetime: Date = new Date(), timeSpan: number = 60, needJourneyDetail: boolean = false): Promise<Stop> {
+		public getDepartures(stop: string, datetime: Date = new Date(), timeSpan: number = 60, needJourneyDetail: boolean = false): Promise<vasttrafikTypes.Stop> {
 			return new Promise((resolve, reject) => {
-				request({
+				this.apiRequester.performRequest({
 					url: `${this.baseUrl}/departureBoard`,
 					method: "GET",
 					qs: {
@@ -25,14 +65,14 @@ namespace vasttrafik {
 					headers: {
 						"Authorization": `Bearer ${this._accessToken}`
 					}
-				}).then((body) => {
+				}).then(function(body) {
 					let data = JSON.parse(body)
-					let departureBoard: DepartureBoard = data.DepartureBoard
+					let departureBoard: vasttrafikTypes.DepartureBoard = data.DepartureBoard
 
-					let result: Stop = vasttrafik.Parser.departures(departureBoard)
+					let result: vasttrafikTypes.Stop = vasttrafik.Parser.departures(departureBoard)
 
 					return resolve(result)
-				}).catch((error) => {
+				}).catch(function(error) {
 					return reject(error)
 				})
 			})
@@ -42,9 +82,9 @@ namespace vasttrafik {
 
 namespace vasttrafik {
 	export class Parser {
-		public static departures(response: DepartureBoard): Stop {
-			let departures: RawDeparture[] = response.Departure
-			let parsedDepartures: DepartureList = {}
+		public static departures(response: vasttrafikTypes.DepartureBoard): vasttrafikTypes.Stop {
+			let departures: vasttrafikTypes.RawDeparture[] = response.Departure
+			let parsedDepartures: vasttrafikTypes.DepartureList = {}
 
 			let serverMoment: moment.Moment = moment(`${response.serverdate} ${response.servertime}`, "YYYY-MM-DD HH:mm")
 
@@ -78,7 +118,7 @@ namespace vasttrafik {
 				// Difference in milliseconds between time of server and time of departure
 				let departureMomentDiff: number = departureMoment.diff(serverMoment)
 
-				let parsedDeparture: Departure = {
+				let parsedDeparture: vasttrafikTypes.Departure = {
 					vehicle: departure.type,
 					line: {
 						name: departure.name,
@@ -110,13 +150,17 @@ namespace vasttrafik {
 				}
 
 				if (!parsedDepartures.hasOwnProperty(departure.sname)) {
-					parsedDepartures[departure.sname] = []
+					parsedDepartures[departure.sname] = {}
 				}
 
-				parsedDepartures[departure.sname].push(parsedDeparture)
+				if (!parsedDepartures[departure.sname].hasOwnProperty(shortDirection.toLowerCase())) {
+					parsedDepartures[departure.sname][shortDirection.toLowerCase()] = []
+				}
+
+				parsedDepartures[departure.sname][shortDirection.toLowerCase()].push(parsedDeparture)
 			})
 
-			let result: Stop = {
+			let result: vasttrafikTypes.Stop = {
 				stop: {
 					id: departures[0].stopid,
 					name: departures[0].stop,
@@ -126,103 +170,6 @@ namespace vasttrafik {
 			}
 
 			return result
-		}
-	}
-}
-
-namespace vasttrafik {
-	export type DepartureBoard = {
-		errorText?: string,
-		Departure?: RawDeparture[]
-		error?: string
-		serverdate?: string
-		servertime?: string
-		noNamespaceSchemaLocation: string
-	}
-
-	export type RawDeparture = {
-		accessibility?: [
-			"wheelChair",
-			"lowFloor"
-		]
-		booking?: boolean
-		name: string
-		sname: string
-		type: string
-		stopid: string
-		stop: string
-		time: string
-		rtTime: string
-		date: string
-		rtDate: string
-		journeyid: string
-		direction: string
-		night?: boolean
-		track: string
-		rtTrack?: string
-		fgColor: string
-		bgColor: string
-		stroke: string
-		JourneyDetailRef?: {
-			ref: string
-		}
-		$: string
-	}
-
-	export type Stop = {
-		stop: {
-			id: string
-			name: string
-			shortName: string
-		}
-		departures?: DepartureList
-		arrivals?: {
-			[lineShortName: string]: Arrival[]
-		} 
-	}
-
-	export type DepartureList = {
-		[lineShortName: string]: Departure[]
-	}
-
-	export type Departure = {
-		vehicle: string
-		line: {
-			name: string
-			shortName: string
-		}
-		direction: {
-			long: string
-			short: string
-		}
-		departure: {
-			realtime: boolean
-			wait: {
-				milliseconds: number
-				seconds: number
-				minutes: number
-			}
-			time: string
-			date: string
-			datetime: Date
-		}
-		track: string
-		colors: {
-			foreground: string
-			background: string
-		}
-		booking: boolean
-		night: boolean
-		accessibility?: [
-			"wheelChair",
-			"lowFloor"
-		]
-	}
-
-	export type Arrival = {
-		line: {
-			name: string
-			shortName: string
 		}
 	}
 }

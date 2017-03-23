@@ -45,17 +45,28 @@ const db = admin.database();
 
 const vasttrafikAuth: Auth = new Auth(config.vasttrafik.accessTokenUrl, config.vasttrafik.consumerKey, config.vasttrafik.consumerSecret)
 
-let vasttrafikApi: vasttrafik.API
+let vasttrafikAPI: vasttrafik.API
 
-vasttrafikAuth.getAccessToken().then((accessToken) => {	
-	vasttrafikApi = new vasttrafik.API(accessToken)
+vasttrafikAuth.getAccessToken().then((accessToken) => {
+	const vasttrafikAPIRequester: vasttrafik.APIRequester = new vasttrafik.APIRequester(10, 60000)
+	vasttrafikAPI = new vasttrafik.API(accessToken, vasttrafikAPIRequester)
 
-	return vasttrafikApi.getDepartures("9021014001960000")
-}).then((result) => {
-	console.dir(result, {
-		depth: 10
+	return Promise.all([
+		vasttrafikAPI.getDepartures("9022014001960001"),
+		vasttrafikAPI.getDepartures("9022014003760001"),
+		vasttrafikAPI.getDepartures("9022014001970001"),
+		vasttrafikAPI.getDepartures("9022014001961001")
+	])
+}).then((results) => {
+	const parsedDeparturesRef: admin.database.Reference = db.ref(`/vasttrafik/departures`)
+
+	results.forEach((result, _) => {
+		parsedDeparturesRef.child(result.stop.id).set(result).then(() => {
+			console.log(`Wrote ${result.stop.shortName} to Firebase`)
+		}).catch((error) => {
+			process.exit(1)
+		})
 	})
-	process.exit(0)
 }).catch((error) => {
 	console.error(error)
 })
