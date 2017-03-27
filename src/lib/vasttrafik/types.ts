@@ -1,4 +1,19 @@
-namespace vasttrafikTypes {
+/**
+ * @since 0.0.1
+ * @version 0.0.1
+ * @file Västtrafik API wrapper types
+ * @module vasttrafik
+ * @author Joel Eriksson <joel.eriksson@protonmail.com>
+ * @copyright 2017 Joel Eriksson <joel.eriksson@protonmail.com>
+ * @license MIT
+ */
+
+/**
+ * @since 0.0.1
+ * @version 0.0.1
+ * @namespace vasttrafik
+ */
+namespace vasttrafik {
 	export type DepartureBoard = {
 		errorText?: string,
 		Departure?: RawDeparture[]
@@ -97,4 +112,4 @@ namespace vasttrafikTypes {
 	}
 }
 
-export { vasttrafikTypes }
+export { vasttrafik }
