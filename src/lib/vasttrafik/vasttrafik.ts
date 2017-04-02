@@ -1,7 +1,7 @@
 /**
  * @since 0.0.1
- * @version 0.0.1
- * @file Main file for the Västtrafik API wrapper
+ * Main file for the Västtrafik API wrapper
+ * @version 0.0.3
  * @module vasttrafik
  * @author Joel Eriksson <joel.eriksson@protonmail.com>
  * @copyright 2017 Joel Eriksson <joel.eriksson@protonmail.com>
@@ -16,18 +16,47 @@ import { vasttrafik as vasttrafikParser } from "./parser"
 
 /**
  * @since 0.0.1
- * @version 0.0.1
+ * @version 0.0.3
  * @namespace vasttrafik
  */
 namespace vasttrafik {
 	/**
-	 * @since 0.0.1
-	 * @version 0.0.1
-	 * @class APIRequester
-	 * @classdesc Perform HTTP throttled requests with a tokenbucket implementation. All requests that exceed the tokenbucket limit will be dropped.
+	 * Base class for interfacing with HTTP.
+	 * @since 0.0.3
+	 * @version 0.0.3
+	 * @class BaseAPIRequester
 	 * @implements HTTPThrottler.HTTPThrottled
 	 */
-	export class APIRequester implements HTTPThrottler.HTTPThrottled {
+	export abstract class BaseAPIRequester implements HTTPThrottler.HTTPThrottled {
+		/**
+		 * For the implementation of [[HTTPThrottler.HTTPThrottled]]
+		 * @since 0.0.3
+		 * @version 0.0.3
+		 * @throws Error
+		 */
+		public requestIsAllowed(): boolean {
+			throw new Error("requestIsAllowed has not been implemented in BaseAPIRequester")
+		}
+
+		/**
+		 * For the implementation of [[HTTPThrottler.HTTPThrottled]]
+		 * @since 0.0.3
+		 * @version 0.0.3
+		 * @throws Error
+		 */
+		public performRequest(options: request.OptionsWithUrl): Promise<any> | request.RequestPromise {
+			throw new Error("requestIsAllowed has not been implemented in BaseAPIRequester")
+		}
+	}
+
+	/**
+	 * Perform HTTP throttled requests with a tokenbucket implementation. All requests that exceed the tokenbucket limit will be dropped.
+	 * @since 0.0.1
+	 * @version 0.0.3
+	 * @class APIRequester
+	 * @extends BaseAPIRequester
+	 */
+	export class APIRequester extends BaseAPIRequester {
 		/**
 		 * When the tokenbucket was last refilled
 		 * @readonly
@@ -43,12 +72,13 @@ namespace vasttrafik {
 
 		/**
 		 * @since 0.0.1
-		 * @version 0.0.1
+		 * @version 0.0.3
 		 * @param {number} maxTokens - The amount of tokens that can be consumed during the interval
 	     * @param {number} tokensRefillRateInMs - How often tokens will be refilled, in milliseconds
-		 * @returns {vasttrafik.APIRequester}
+		 * @returns {vasttrafik.BaseAPIRequester}
 		 */
 		constructor(public maxTokens: number, public tokensRefillRateInMs: number) {
+			super()
 			this.lastTokenRefill = new Date(Date.now())
 			this.tokens = maxTokens
 		}
@@ -122,28 +152,28 @@ namespace vasttrafik {
 
 		/**
 		 * @since 0.0.1
-		 * @version 0.0.1
+		 * @version 0.0.3
 		 * @param {string} _accessToken - The access token to use for authorization
-		 * @param {vasttrafik.APIRequester} apiRequester - An instance of APIRequester
+		 * @param {HTTPThrottler.HTTPThrottled} apiRequester - An instance of a class implementing the [[HTTPThrottler.HTTPThrottled]] interface
 		 * @returns {vasttrafik.API}
 		 */
-		constructor(private _accessToken: string, public apiRequester: vasttrafik.APIRequester) {
+		constructor(private _accessToken: string, public apiRequester: HTTPThrottler.HTTPThrottled) {
 			
 		}
 
 		/**
-		 * Get and parse data from the Västtrafik's "departureBoard" endpoint
+		 * GET and parse data from the Västtrafik's "departureBoard" endpoint
 		 * @since 0.0.1
-		 * @version 0.0.1
+		 * @version 0.0.3
 		 * @param {string} stop - The ID of the stop to get departures from
 		 * @param {Date} datetime - The time and date of which to get departures
 		 * @param {number} timeSpan - To get the next departures in a specified timespan of up to 24 hours, in minutes
 		 * @param {boolean} needJourneyDetail - Whether or not the reference URL for the journey detail service is needed
-		 * @returns {Promise<vasttrafikTypes.Stop>}
+		 * @returns {Promise<Stop>}
 		 * @public
 		 */
 		public getDepartures(stop: string, datetime: Date = new Date(), timeSpan: number = 60, needJourneyDetail: boolean = false): Promise<vasttrafikTypes.Stop> {
-			return new Promise((resolve, reject) => {
+			return new Promise(function(resolve, reject) {
 				this.apiRequester.performRequest({
 					url: `${this.baseUrl}/departureBoard`,
 					method: "GET",

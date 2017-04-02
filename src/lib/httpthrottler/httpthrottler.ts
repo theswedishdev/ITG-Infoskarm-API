@@ -18,6 +18,8 @@ import * as request from "request-promise-native"
 namespace HTTPThrottler {
 	/**
 	 * Interface for classes that represent a throttler for HTTP requests
+	 * @since 0.0.1
+	 * @version 0.0.1
 	 * @interface HTTPThrottled
 	 */
 	export interface HTTPThrottled {

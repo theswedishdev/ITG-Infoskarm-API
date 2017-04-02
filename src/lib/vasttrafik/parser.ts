@@ -1,7 +1,6 @@
 /**
+ * Västtrafik API wrapper parser
  * @since 0.0.1
- * @version 0.0.1
- * @file Västtrafik API wrapper parser
  * @module vasttrafik
  * @author Joel Eriksson <joel.eriksson@protonmail.com>
  * @copyright 2017 Joel Eriksson <joel.eriksson@protonmail.com>
@@ -29,8 +28,8 @@ namespace vasttrafik {
 		 * @since 0.0.1
 		 * @version 0.0.1
 		 * @method departures
-		 * @param {vasttrafikTypes.DepartureBoard} response - The raw response from Västtrafik's "departureBoard" endpoint
-		 * @returns {vasttrafikTypes.Stop}
+		 * @param {DepartureBoard} response - The raw response from Västtrafik's "departureBoard" endpoint
+		 * @returns {Stop}
 		 * @public
 		 * @static
 		 */

@@ -131,13 +131,13 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new API<span class="tsd-signature-symbol">(</span>_accessToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, apiRequester<span class="tsd-signature-symbol">: </span><a href="_src_lib_vasttrafik_vasttrafik_.vasttrafik.apirequester.html" class="tsd-signature-type">APIRequester</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_src_lib_vasttrafik_vasttrafik_.vasttrafik.api.html" class="tsd-signature-type">API</a></li>
+						<li class="tsd-signature tsd-kind-icon">new API<span class="tsd-signature-symbol">(</span>_accessToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, apiRequester<span class="tsd-signature-symbol">: </span><a href="../interfaces/_src_lib_httpthrottler_httpthrottler_.httpthrottler.httpthrottled.html" class="tsd-signature-type">HTTPThrottled</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_src_lib_vasttrafik_vasttrafik_.vasttrafik.api.html" class="tsd-signature-type">API</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/itggot-joel-eriksson/ITG-Infoskarm-API/blob/f7a2e68/src/lib/vasttrafik/vasttrafik.ts#L121">src/lib/vasttrafik/vasttrafik.ts:121</a></li>
+									<li>Defined in <a href="https://github.com/itggot-joel-eriksson/ITG-Infoskarm-API/blob/059f436/src/lib/vasttrafik/vasttrafik.ts#L151">src/lib/vasttrafik/vasttrafik.ts:151</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -146,7 +146,7 @@
 									<dd><p>0.0.1</p>
 									</dd>
 									<dt>version</dt>
-									<dd><p>0.0.1</p>
+									<dd><p>0.0.3</p>
 									</dd>
 								</dl>
 							</div>
@@ -161,10 +161,10 @@
 									</div>
 								</li>
 								<li>
-									<h5>apiRequester: <a href="_src_lib_vasttrafik_vasttrafik_.vasttrafik.apirequester.html" class="tsd-signature-type">APIRequester</a></h5>
+									<h5>apiRequester: <a href="../interfaces/_src_lib_httpthrottler_httpthrottler_.httpthrottler.httpthrottled.html" class="tsd-signature-type">HTTPThrottled</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>An instance of APIRequester</p>
+											<p>An instance of a class implementing the <a href="../interfaces/_src_lib_httpthrottler_httpthrottler_.httpthrottler.httpthrottled.html">HTTPThrottler.HTTPThrottled</a> interface</p>
 										</div>
 									</div>
 								</li>
@@ -182,7 +182,7 @@
 					<div class="tsd-signature tsd-kind-icon">_access<wbr>Token<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/itggot-joel-eriksson/ITG-Infoskarm-API/blob/f7a2e68/src/lib/vasttrafik/vasttrafik.ts#L130">src/lib/vasttrafik/vasttrafik.ts:130</a></li>
+							<li>Defined in <a href="https://github.com/itggot-joel-eriksson/ITG-Infoskarm-API/blob/059f436/src/lib/vasttrafik/vasttrafik.ts#L160">src/lib/vasttrafik/vasttrafik.ts:160</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -194,15 +194,15 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="apirequester" class="tsd-anchor"></a>
 					<h3>api<wbr>Requester</h3>
-					<div class="tsd-signature tsd-kind-icon">api<wbr>Requester<span class="tsd-signature-symbol">:</span> <a href="_src_lib_vasttrafik_vasttrafik_.vasttrafik.apirequester.html" class="tsd-signature-type">APIRequester</a></div>
+					<div class="tsd-signature tsd-kind-icon">api<wbr>Requester<span class="tsd-signature-symbol">:</span> <a href="../interfaces/_src_lib_httpthrottler_httpthrottler_.httpthrottler.httpthrottled.html" class="tsd-signature-type">HTTPThrottled</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/itggot-joel-eriksson/ITG-Infoskarm-API/blob/f7a2e68/src/lib/vasttrafik/vasttrafik.ts#L130">src/lib/vasttrafik/vasttrafik.ts:130</a></li>
+							<li>Defined in <a href="https://github.com/itggot-joel-eriksson/ITG-Infoskarm-API/blob/059f436/src/lib/vasttrafik/vasttrafik.ts#L160">src/lib/vasttrafik/vasttrafik.ts:160</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>An instance of APIRequester</p>
+							<p>An instance of a class implementing the <a href="../interfaces/_src_lib_httpthrottler_httpthrottler_.httpthrottler.httpthrottled.html">HTTPThrottler.HTTPThrottled</a> interface</p>
 						</div>
 					</div>
 				</section>
@@ -212,7 +212,7 @@
 					<div class="tsd-signature tsd-kind-icon">base<wbr>Url<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;https://api.vasttrafik.se/bin/rest.exe/v2&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/itggot-joel-eriksson/ITG-Infoskarm-API/blob/f7a2e68/src/lib/vasttrafik/vasttrafik.ts#L121">src/lib/vasttrafik/vasttrafik.ts:121</a></li>
+							<li>Defined in <a href="https://github.com/itggot-joel-eriksson/ITG-Infoskarm-API/blob/059f436/src/lib/vasttrafik/vasttrafik.ts#L151">src/lib/vasttrafik/vasttrafik.ts:151</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -238,19 +238,19 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/itggot-joel-eriksson/ITG-Infoskarm-API/blob/f7a2e68/src/lib/vasttrafik/vasttrafik.ts#L145">src/lib/vasttrafik/vasttrafik.ts:145</a></li>
+									<li>Defined in <a href="https://github.com/itggot-joel-eriksson/ITG-Infoskarm-API/blob/059f436/src/lib/vasttrafik/vasttrafik.ts#L175">src/lib/vasttrafik/vasttrafik.ts:175</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Get and parse data from the Västtrafik&#39;s &quot;departureBoard&quot; endpoint</p>
+									<p>GET and parse data from the Västtrafik&#39;s &quot;departureBoard&quot; endpoint</p>
 								</div>
 								<dl class="tsd-comment-tags">
 									<dt>since</dt>
 									<dd><p>0.0.1</p>
 									</dd>
 									<dt>version</dt>
-									<dd><p>0.0.1</p>
+									<dd><p>0.0.3</p>
 									</dd>
 								</dl>
 							</div>
@@ -394,6 +394,9 @@
 				<ul class="after-current">
 					<li class=" tsd-kind-class tsd-parent-kind-module">
 						<a href="_src_lib_vasttrafik_vasttrafik_.vasttrafik.apirequester.html" class="tsd-kind-icon">APIRequester</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-module">
+						<a href="_src_lib_vasttrafik_vasttrafik_.vasttrafik.baseapirequester.html" class="tsd-kind-icon">BaseAPIRequester</a>
 					</li>
 				</ul>
 			</nav>

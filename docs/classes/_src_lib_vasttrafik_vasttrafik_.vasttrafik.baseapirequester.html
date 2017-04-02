@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>APIRequester | ITG-Infoskarm API</title>
+	<title>BaseAPIRequester | ITG-Infoskarm API</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -62,10 +62,10 @@
 					<a href="../modules/_src_lib_vasttrafik_vasttrafik_.vasttrafik.html">vasttrafik</a>
 				</li>
 				<li>
-					<a href="_src_lib_vasttrafik_vasttrafik_.vasttrafik.apirequester.html">APIRequester</a>
+					<a href="_src_lib_vasttrafik_vasttrafik_.vasttrafik.baseapirequester.html">BaseAPIRequester</a>
 				</li>
 			</ul>
-			<h1>Class APIRequester</h1>
+			<h1>Class BaseAPIRequester</h1>
 		</div>
 	</div>
 </header>
@@ -75,20 +75,20 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Perform HTTP throttled requests with a tokenbucket implementation. All requests that exceed the tokenbucket limit will be dropped.</p>
+						<p>Base class for interfacing with HTTP.</p>
 					</div>
 					<dl class="tsd-comment-tags">
 						<dt>since</dt>
-						<dd><p>0.0.1</p>
+						<dd><p>0.0.3</p>
 						</dd>
 						<dt>version</dt>
 						<dd><p>0.0.3</p>
 						</dd>
 						<dt>class</dt>
-						<dd><p>APIRequester</p>
-						</dd>
-						<dt>extends</dt>
 						<dd><p>BaseAPIRequester</p>
+						</dd>
+						<dt>implements</dt>
+						<dd><p>HTTPThrottler.HTTPThrottled</p>
 						</dd>
 					</dl>
 				</div>
@@ -97,10 +97,10 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<a href="_src_lib_vasttrafik_vasttrafik_.vasttrafik.baseapirequester.html" class="tsd-signature-type">BaseAPIRequester</a>
+						<span class="target">BaseAPIRequester</span>
 						<ul class="tsd-hierarchy">
 							<li>
-								<span class="target">APIRequester</span>
+								<a href="_src_lib_vasttrafik_vasttrafik_.vasttrafik.apirequester.html" class="tsd-signature-type">APIRequester</a>
 							</li>
 						</ul>
 					</li>
@@ -117,181 +117,44 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Constructors</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="_src_lib_vasttrafik_vasttrafik_.vasttrafik.apirequester.html#constructor" class="tsd-kind-icon">constructor</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section ">
-							<h3>Properties</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_lib_vasttrafik_vasttrafik_.vasttrafik.apirequester.html#lasttokenrefill" class="tsd-kind-icon">last<wbr>Token<wbr>Refill</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_lib_vasttrafik_vasttrafik_.vasttrafik.apirequester.html#maxtokens" class="tsd-kind-icon">max<wbr>Tokens</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_lib_vasttrafik_vasttrafik_.vasttrafik.apirequester.html#tokens" class="tsd-kind-icon">tokens</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_lib_vasttrafik_vasttrafik_.vasttrafik.apirequester.html#tokensrefillrateinms" class="tsd-kind-icon">tokens<wbr>Refill<wbr>Rate<wbr>InMs</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="_src_lib_vasttrafik_vasttrafik_.vasttrafik.apirequester.html#performrequest" class="tsd-kind-icon">perform<wbr>Request</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_vasttrafik_vasttrafik_.vasttrafik.apirequester.html#refilltokens" class="tsd-kind-icon">refill<wbr>Tokens</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="_src_lib_vasttrafik_vasttrafik_.vasttrafik.apirequester.html#requestisallowed" class="tsd-kind-icon">request<wbr>IsAllowed</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_vasttrafik_vasttrafik_.vasttrafik.baseapirequester.html#performrequest" class="tsd-kind-icon">perform<wbr>Request</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_src_lib_vasttrafik_vasttrafik_.vasttrafik.baseapirequester.html#requestisallowed" class="tsd-kind-icon">request<wbr>IsAllowed</a></li>
 							</ul>
 						</section>
-					</div>
-				</section>
-			</section>
-			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Constructors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class">
-					<a name="constructor" class="tsd-anchor"></a>
-					<h3>constructor</h3>
-					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new APIRequester<span class="tsd-signature-symbol">(</span>maxTokens<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, tokensRefillRateInMs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_src_lib_vasttrafik_vasttrafik_.vasttrafik.apirequester.html" class="tsd-signature-type">APIRequester</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/itggot-joel-eriksson/ITG-Infoskarm-API/blob/059f436/src/lib/vasttrafik/vasttrafik.ts#L71">src/lib/vasttrafik/vasttrafik.ts:71</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<dl class="tsd-comment-tags">
-									<dt>since</dt>
-									<dd><p>0.0.1</p>
-									</dd>
-									<dt>version</dt>
-									<dd><p>0.0.3</p>
-									</dd>
-								</dl>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>maxTokens: <span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The amount of tokens that can be consumed during the interval</p>
-										</div>
-									</div>
-								</li>
-								<li>
-									<h5>tokensRefillRateInMs: <span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>How often tokens will be refilled, in milliseconds</p>
-										</div>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="_src_lib_vasttrafik_vasttrafik_.vasttrafik.apirequester.html" class="tsd-signature-type">APIRequester</a></h4>
-						</li>
-					</ul>
-				</section>
-			</section>
-			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="lasttokenrefill" class="tsd-anchor"></a>
-					<h3>last<wbr>Token<wbr>Refill</h3>
-					<div class="tsd-signature tsd-kind-icon">last<wbr>Token<wbr>Refill<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Date</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/itggot-joel-eriksson/ITG-Infoskarm-API/blob/059f436/src/lib/vasttrafik/vasttrafik.ts#L65">src/lib/vasttrafik/vasttrafik.ts:65</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>When the tokenbucket was last refilled</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>readonly</dt>
-							<dd></dd>
-						</dl>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="maxtokens" class="tsd-anchor"></a>
-					<h3>max<wbr>Tokens</h3>
-					<div class="tsd-signature tsd-kind-icon">max<wbr>Tokens<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/itggot-joel-eriksson/ITG-Infoskarm-API/blob/059f436/src/lib/vasttrafik/vasttrafik.ts#L80">src/lib/vasttrafik/vasttrafik.ts:80</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The amount of tokens that can be consumed during the interval</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="tokens" class="tsd-anchor"></a>
-					<h3>tokens</h3>
-					<div class="tsd-signature tsd-kind-icon">tokens<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/itggot-joel-eriksson/ITG-Infoskarm-API/blob/059f436/src/lib/vasttrafik/vasttrafik.ts#L71">src/lib/vasttrafik/vasttrafik.ts:71</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Amount of tokens left</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>readonly</dt>
-							<dd></dd>
-						</dl>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="tokensrefillrateinms" class="tsd-anchor"></a>
-					<h3>tokens<wbr>Refill<wbr>Rate<wbr>InMs</h3>
-					<div class="tsd-signature tsd-kind-icon">tokens<wbr>Refill<wbr>Rate<wbr>InMs<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/itggot-joel-eriksson/ITG-Infoskarm-API/blob/059f436/src/lib/vasttrafik/vasttrafik.ts#L80">src/lib/vasttrafik/vasttrafik.ts:80</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>How often tokens will be refilled, in milliseconds</p>
-						</div>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="performrequest" class="tsd-anchor"></a>
 					<h3>perform<wbr>Request</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
-						<li class="tsd-signature tsd-kind-icon">perform<wbr>Request<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">: </span><a href="../modules/_node_modules__types_request_index_d_.request.html#optionswithurl" class="tsd-signature-type">OptionsWithUrl</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></li>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">perform<wbr>Request<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">: </span><a href="../modules/_node_modules__types_request_index_d_.request.html#optionswithurl" class="tsd-signature-type">OptionsWithUrl</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">request.RequestPromise</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/_src_lib_httpthrottler_httpthrottler_.httpthrottler.httpthrottled.html">HTTPThrottled</a>.<a href="../interfaces/_src_lib_httpthrottler_httpthrottler_.httpthrottler.httpthrottled.html#performrequest">performRequest</a></p>
-								<p>Overrides <a href="_src_lib_vasttrafik_vasttrafik_.vasttrafik.baseapirequester.html">BaseAPIRequester</a>.<a href="_src_lib_vasttrafik_vasttrafik_.vasttrafik.baseapirequester.html#performrequest">performRequest</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/itggot-joel-eriksson/ITG-Infoskarm-API/blob/059f436/src/lib/vasttrafik/vasttrafik.ts#L130">src/lib/vasttrafik/vasttrafik.ts:130</a></li>
+									<li>Defined in <a href="https://github.com/itggot-joel-eriksson/ITG-Infoskarm-API/blob/059f436/src/lib/vasttrafik/vasttrafik.ts#L47">src/lib/vasttrafik/vasttrafik.ts:47</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Performs the request if the tokenbucket has tokens left to use</p>
+									<p>For the implementation of <a href="../interfaces/_src_lib_httpthrottler_httpthrottler_.httpthrottler.httpthrottled.html">HTTPThrottler.HTTPThrottled</a></p>
 								</div>
 								<dl class="tsd-comment-tags">
 									<dt>since</dt>
-									<dd><p>0.0.1</p>
+									<dd><p>0.0.3</p>
 									</dd>
 									<dt>version</dt>
-									<dd><p>0.0.1</p>
+									<dd><p>0.0.3</p>
 									</dd>
-									<dt>method</dt>
-									<dd><p>performRequest</p>
+									<dt>throws</dt>
+									<dd><p>Error</p>
 									</dd>
 								</dl>
 							</div>
@@ -301,71 +164,40 @@
 									<h5>options: <a href="../modules/_node_modules__types_request_index_d_.request.html#optionswithurl" class="tsd-signature-type">OptionsWithUrl</a></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span>
+								<span class="tsd-signature-symbol"> | </span>
+								<span class="tsd-signature-type">request.RequestPromise</span>
+							</h4>
 						</li>
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="refilltokens" class="tsd-anchor"></a>
-					<h3>refill<wbr>Tokens</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">refill<wbr>Tokens<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/itggot-joel-eriksson/ITG-Infoskarm-API/blob/059f436/src/lib/vasttrafik/vasttrafik.ts#L94">src/lib/vasttrafik/vasttrafik.ts:94</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Refills the tokenbucket if it was has not already been filled during the current timeframe</p>
-								</div>
-								<dl class="tsd-comment-tags">
-									<dt>since</dt>
-									<dd><p>0.0.1</p>
-									</dd>
-									<dt>version</dt>
-									<dd><p>0.0.1</p>
-									</dd>
-									<dt>method</dt>
-									<dd><p>refillTokens</p>
-									</dd>
-								</dl>
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
 					<a name="requestisallowed" class="tsd-anchor"></a>
 					<h3>request<wbr>IsAllowed</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
 						<li class="tsd-signature tsd-kind-icon">request<wbr>IsAllowed<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/_src_lib_httpthrottler_httpthrottler_.httpthrottler.httpthrottled.html">HTTPThrottled</a>.<a href="../interfaces/_src_lib_httpthrottler_httpthrottler_.httpthrottler.httpthrottled.html#requestisallowed">requestIsAllowed</a></p>
-								<p>Overrides <a href="_src_lib_vasttrafik_vasttrafik_.vasttrafik.baseapirequester.html">BaseAPIRequester</a>.<a href="_src_lib_vasttrafik_vasttrafik_.vasttrafik.baseapirequester.html#requestisallowed">requestIsAllowed</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/itggot-joel-eriksson/ITG-Infoskarm-API/blob/059f436/src/lib/vasttrafik/vasttrafik.ts#L111">src/lib/vasttrafik/vasttrafik.ts:111</a></li>
+									<li>Defined in <a href="https://github.com/itggot-joel-eriksson/ITG-Infoskarm-API/blob/059f436/src/lib/vasttrafik/vasttrafik.ts#L37">src/lib/vasttrafik/vasttrafik.ts:37</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Checks if there are tokens left in the tokenbucket to use for a request</p>
+									<p>For the implementation of <a href="../interfaces/_src_lib_httpthrottler_httpthrottler_.httpthrottler.httpthrottled.html">HTTPThrottler.HTTPThrottled</a></p>
 								</div>
 								<dl class="tsd-comment-tags">
 									<dt>since</dt>
-									<dd><p>0.0.1</p>
+									<dd><p>0.0.3</p>
 									</dd>
 									<dt>version</dt>
-									<dd><p>0.0.1</p>
+									<dd><p>0.0.3</p>
 									</dd>
-									<dt>method</dt>
-									<dd><p>requestIsAllowed</p>
+									<dt>throws</dt>
+									<dd><p>Error</p>
 									</dd>
 								</dl>
 							</div>
@@ -459,42 +291,24 @@
 					<li class=" tsd-kind-class tsd-parent-kind-module">
 						<a href="_src_lib_vasttrafik_vasttrafik_.vasttrafik.api.html" class="tsd-kind-icon">API</a>
 					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-module">
+						<a href="_src_lib_vasttrafik_vasttrafik_.vasttrafik.apirequester.html" class="tsd-kind-icon">APIRequester</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class tsd-parent-kind-module">
-						<a href="_src_lib_vasttrafik_vasttrafik_.vasttrafik.apirequester.html" class="tsd-kind-icon">APIRequester</a>
+						<a href="_src_lib_vasttrafik_vasttrafik_.vasttrafik.baseapirequester.html" class="tsd-kind-icon">BaseAPIRequester</a>
 						<ul>
-							<li class=" tsd-kind-constructor tsd-parent-kind-class">
-								<a href="_src_lib_vasttrafik_vasttrafik_.vasttrafik.apirequester.html#constructor" class="tsd-kind-icon">constructor</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_src_lib_vasttrafik_vasttrafik_.vasttrafik.apirequester.html#lasttokenrefill" class="tsd-kind-icon">last<wbr>Token<wbr>Refill</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_src_lib_vasttrafik_vasttrafik_.vasttrafik.apirequester.html#maxtokens" class="tsd-kind-icon">max<wbr>Tokens</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_src_lib_vasttrafik_vasttrafik_.vasttrafik.apirequester.html#tokens" class="tsd-kind-icon">tokens</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_src_lib_vasttrafik_vasttrafik_.vasttrafik.apirequester.html#tokensrefillrateinms" class="tsd-kind-icon">tokens<wbr>Refill<wbr>Rate<wbr>InMs</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
-								<a href="_src_lib_vasttrafik_vasttrafik_.vasttrafik.apirequester.html#performrequest" class="tsd-kind-icon">perform<wbr>Request</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_src_lib_vasttrafik_vasttrafik_.vasttrafik.baseapirequester.html#performrequest" class="tsd-kind-icon">perform<wbr>Request</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_src_lib_vasttrafik_vasttrafik_.vasttrafik.apirequester.html#refilltokens" class="tsd-kind-icon">refill<wbr>Tokens</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
-								<a href="_src_lib_vasttrafik_vasttrafik_.vasttrafik.apirequester.html#requestisallowed" class="tsd-kind-icon">request<wbr>IsAllowed</a>
+								<a href="_src_lib_vasttrafik_vasttrafik_.vasttrafik.baseapirequester.html#requestisallowed" class="tsd-kind-icon">request<wbr>IsAllowed</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-class tsd-parent-kind-module">
-						<a href="_src_lib_vasttrafik_vasttrafik_.vasttrafik.baseapirequester.html" class="tsd-kind-icon">BaseAPIRequester</a>
-					</li>
 				</ul>
 			</nav>
 		</div>

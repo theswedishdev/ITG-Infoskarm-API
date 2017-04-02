@@ -1,7 +1,6 @@
 /**
+ * Västtrafik API wrapper types
  * @since 0.0.1
- * @version 0.0.1
- * @file Västtrafik API wrapper types
  * @module vasttrafik
  * @author Joel Eriksson <joel.eriksson@protonmail.com>
  * @copyright 2017 Joel Eriksson <joel.eriksson@protonmail.com>
@@ -14,6 +13,10 @@
  * @namespace vasttrafik
  */
 namespace vasttrafik {
+	/**
+	 * @since 0.0.1
+	 * @version 0.0.1
+	 */
 	export type DepartureBoard = {
 		errorText?: string,
 		Departure?: RawDeparture[]
@@ -23,6 +26,10 @@ namespace vasttrafik {
 		noNamespaceSchemaLocation: string
 	}
 
+	/**
+	 * @since 0.0.1
+	 * @version 0.0.1
+	 */
 	export type RawDeparture = {
 		accessibility?: [
 			"wheelChair",
@@ -52,6 +59,10 @@ namespace vasttrafik {
 		$: string
 	}
 
+	/**
+	 * @since 0.0.1
+	 * @version 0.0.3
+	 */
 	export type Stop = {
 		stop: {
 			id: string
@@ -59,17 +70,22 @@ namespace vasttrafik {
 			shortName: string
 		}
 		departures?: DepartureList
-		arrivals?: {
-			[lineShortName: string]: Arrival[]
-		} 
 	}
 
+	/**
+	 * @since 0.0.1
+	 * @version 0.0.1
+	 */
 	export type DepartureList = {
 		[lineShortName: string]: {
 			[directionShort: string]: Departure[]
 		}
 	}
 
+	/**
+	 * @since 0.0.1
+	 * @version 0.0.1
+	 */
 	export type Departure = {
 		vehicle: string
 		line: {
@@ -102,13 +118,6 @@ namespace vasttrafik {
 			"wheelChair",
 			"lowFloor"
 		]
-	}
-
-	export type Arrival = {
-		line: {
-			name: string
-			shortName: string
-		}
 	}
 }
 
