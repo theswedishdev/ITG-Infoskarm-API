@@ -16,9 +16,9 @@ import vasttrafik from "./lib/vasttrafik/vasttrafik"
 import schoolmeal from "./lib/schoolmeal/schoolmeal"
 import gbgcamera from "./lib/gbgcamera/gbgcamera"
 
-const cProperty: chalk.ChalkStyle = chalk.cyan
+const cProperty = chalk.cyan
 
-const cWarn: chalk.ChalkStyle = chalk.yellow
+const cWarn = chalk.yellow
 
 const cError = (error: string | Error): string => {
 	if (error instanceof Error) {
