@@ -504,3 +504,6 @@ config/config.json
 
 # Do not include 'dist'-folder while in development
 dist/**
+
+# Images cache
+images/**

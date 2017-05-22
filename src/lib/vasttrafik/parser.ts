@@ -12,13 +12,11 @@ import { vasttrafik as vasttrafikTypes } from "./types"
 
 /**
  * @since 0.0.1
- * @version 0.0.1
  * @namespace vasttrafik
  */
 namespace vasttrafik {
 	/**
 	 * @since 0.0.1
-	 * @version 0.0.1
 	 * @class Parser
 	 * @classdesc Parse responses from Västtrafik's API endpoints
 	 */
@@ -26,20 +24,28 @@ namespace vasttrafik {
 		/**
 		 * Parse raw departureBoard responses to a format easier to work with
 		 * @since 0.0.1
-		 * @version 0.0.1
 		 * @method departures
 		 * @param {DepartureBoard} response - The raw response from Västtrafik's "departureBoard" endpoint
 		 * @returns {Stop}
 		 * @public
 		 * @static
 		 */
-		public static departures(response: vasttrafikTypes.DepartureBoard): vasttrafikTypes.Stop {
-			let departures: vasttrafikTypes.RawDeparture[] = response.Departure
+		public static departures(response: vasttrafikTypes.DepartureBoard, stopid: string): vasttrafikTypes.Stop {
+			let departures: vasttrafikTypes.RawDeparture[] = response.Departure || []
+
+			if (departures.length < 1) {
+				return {
+					stop: {
+						id: stopid
+					}
+				}
+			}
+
 			let parsedDepartures: vasttrafikTypes.DepartureList = {}
 
 			let serverMoment: moment.Moment = moment(`${response.serverdate} ${response.servertime}`, "YYYY-MM-DD HH:mm")
 
-			departures.forEach((departure, _) => {
+			departures.forEach((departure, i) => {
 				let shortDirection = departure.direction.indexOf(" via") > 0 ? departure.direction.substr(0, departure.direction.indexOf(" via")) : departure.direction
 				shortDirection = shortDirection.indexOf(",") > 0 ? shortDirection.substr(0, shortDirection.indexOf(",")) : shortDirection
 
@@ -83,8 +89,8 @@ namespace vasttrafik {
 						realtime: realtime,
 						wait: {
 							milliseconds: departureMomentDiff,
-							seconds: departureMomentDiff / 1000,
-							minutes: parseInt(moment(departureMomentDiff).format("m")),
+							seconds: (departureMomentDiff / 1000),
+							minutes: ((departureMomentDiff / 1000) / 60),
 						},
 						date: date,
 						time: time,
@@ -95,8 +101,8 @@ namespace vasttrafik {
 						foreground: departure.bgColor,
 						background: departure.fgColor,
 					},
-					booking: departure.booking ? departure.booking : false,
-					night: departure.night ? departure.night : false,
+					booking: departure.booking ? departure.booking : null,
+					night: departure.night ? departure.night : null,
 					accessibility: departure.accessibility ? departure.accessibility : null
 				}
 

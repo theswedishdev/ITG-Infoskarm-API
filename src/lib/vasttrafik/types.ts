@@ -9,13 +9,11 @@
 
 /**
  * @since 0.0.1
- * @version 0.0.1
  * @namespace vasttrafik
  */
 namespace vasttrafik {
 	/**
 	 * @since 0.0.1
-	 * @version 0.0.1
 	 */
 	export type DepartureBoard = {
 		errorText?: string,
@@ -28,7 +26,6 @@ namespace vasttrafik {
 
 	/**
 	 * @since 0.0.1
-	 * @version 0.0.1
 	 */
 	export type RawDeparture = {
 		accessibility?: [
@@ -61,20 +58,18 @@ namespace vasttrafik {
 
 	/**
 	 * @since 0.0.1
-	 * @version 0.0.3
 	 */
 	export type Stop = {
 		stop: {
 			id: string
-			name: string
-			shortName: string
+			name?: string
+			shortName?: string
 		}
 		departures?: DepartureList
 	}
 
 	/**
 	 * @since 0.0.1
-	 * @version 0.0.1
 	 */
 	export type DepartureList = {
 		[lineShortName: string]: {
@@ -84,7 +79,6 @@ namespace vasttrafik {
 
 	/**
 	 * @since 0.0.1
-	 * @version 0.0.1
 	 */
 	export type Departure = {
 		vehicle: string
@@ -112,12 +106,9 @@ namespace vasttrafik {
 			foreground: string
 			background: string
 		}
-		booking: boolean
-		night: boolean
-		accessibility?: [
-			"wheelChair",
-			"lowFloor"
-		]
+		booking: true | null
+		night: true | null
+		accessibility: [ "wheelChair", "lowFloor" ] | null
 	}
 }
 

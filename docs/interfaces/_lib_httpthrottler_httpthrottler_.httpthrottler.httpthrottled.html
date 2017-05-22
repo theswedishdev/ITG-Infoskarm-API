@@ -3,17 +3,17 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ITG-Infoskarm API</title>
+	<title>HTTPThrottled | ITG-Infoskarm API</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="assets/css/main.css">
+	<link rel="stylesheet" href="../assets/css/main.css">
 </head>
 <body>
 <header>
 	<div class="tsd-page-toolbar">
 		<div class="container">
 			<div class="table-wrap">
-				<div class="table-cell" id="tsd-search" data-index="assets/js/search.js" data-base=".">
+				<div class="table-cell" id="tsd-search" data-index="../assets/js/search.js" data-base="..">
 					<div class="field">
 						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
 						<input id="tsd-search-field" type="text" />
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="index.html" class="title">ITG-Infoskarm API</a>
+					<a href="../index.html" class="title">ITG-Infoskarm API</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -53,152 +53,182 @@
 		<div class="container">
 			<ul class="tsd-breadcrumb">
 				<li>
-					<a href="globals.html">Globals</a>
+					<a href="../globals.html">Globals</a>
+				</li>
+				<li>
+					<a href="../modules/_lib_httpthrottler_httpthrottler_.html">&quot;lib/httpthrottler/httpthrottler&quot;</a>
+				</li>
+				<li>
+					<a href="../modules/_lib_httpthrottler_httpthrottler_.httpthrottler.html">HTTPThrottler</a>
+				</li>
+				<li>
+					<a href="_lib_httpthrottler_httpthrottler_.httpthrottler.httpthrottled.html">HTTPThrottled</a>
 				</li>
 			</ul>
-			<h1> ITG-Infoskarm API</h1>
+			<h1>Interface HTTPThrottled</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<div class="tsd-panel tsd-typography">
-				<h1 id="itg-infoskarm-api">ITG-Infoskarm API</h1>
-				<p>This project is a working WIP. It does not have all planned features.</p>
-				<h1 id="api">API</h1>
-				<h2 id="vasttrafik-baseapirequester">vasttrafik.BaseAPIRequester</h2>
-				<p>The <code>BaseAPIRequester</code> is not supposed to be used for anything except as a template for an HTTP request class.</p>
-				<h3 id="usage">Usage</h3>
-				<p>This class is not for use as all methods included will throw an error. The <code>BaseAPIRequester</code> should only be used to extend another class that implements the <code>HTTPThrottler.HTTPThrottled</code> interface.</p>
-				<pre><code class="lang-javascript"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">FooAPIRequester</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">BaseAPIRequester</span> </span>{
-    <span class="hljs-keyword">constructor</span>() {
-        <span class="hljs-keyword">super</span>()
-    }
-
-    public requestIsAllowed() {
-        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>
-    }
-
-    public performRequest(options) {
-        <span class="hljs-keyword">return</span> request(options).promise()
-    }
-}
-</code></pre>
-				<h2 id="vasttrafik-apirequester">vasttrafik.APIRequester</h2>
-				<p>The <code>APIRequester</code> is an implementation of <code>HTTPThrottler.HTTPThrottled</code> that extends <code>BaseAPIRequester</code> with a token bucket.</p>
-				<h3 id="usage">Usage</h3>
-				<h4 id="create-an-instance">Create an instance</h4>
-				<p>This example will create an instance of <code>APIRequster</code> allowing 10 requests per minute.</p>
-				<pre><code class="lang-javascript"><span class="hljs-keyword">const</span> vasttrafikAPIRequester = <span class="hljs-keyword">new</span> vasttrafik.APIRequester(<span class="hljs-number">10</span>, <span class="hljs-number">60000</span>)
-</code></pre>
-				<h3 id="methods">Methods</h3>
-				<p><strong>performRequest</strong></p>
-				<p>Perform a request using <a href="https://www.npmjs.com/package/request-promise-native"><code>request-promise-native</code></a>.</p>
-				<pre><code class="lang-javascript">apiRequester.performRequest({
-    <span class="hljs-attr">url</span>: <span class="hljs-string">"https://httpbin.org/get"</span>,
-    <span class="hljs-attr">method</span>: <span class="hljs-string">"GET"</span>
-}).then(<span class="hljs-function">(<span class="hljs-params">data</span>) =&gt;</span> {
-    <span class="hljs-comment">// Consume data</span>
-}).catch(<span class="hljs-function">(<span class="hljs-params">error</span>) =&gt;</span> {
-    <span class="hljs-comment">// Handle errors</span>
-})
-</code></pre>
-				<p><strong>requestIsAllowed</strong></p>
-				<p>Check if a HTTP request is allowed or not.</p>
-				<pre><code class="lang-javascript"><span class="hljs-keyword">if</span> (apiRequester.requestIsAllowed()) {
-    <span class="hljs-comment">// Perform a request</span>
-} <span class="hljs-keyword">else</span> {
-    <span class="hljs-comment">// Do not perform a request</span>
-}
-</code></pre>
-				<p><strong>refillTokens</strong></p>
-				<p>Refill tokens to the token bucket to make sure there are token left to make HTTP requests. This is typically not necessary as this method is called with <code>requestIsAllowed</code>. The token bucket will refill if the time when the token bucket was refilled plus the amount of milliseconds passed to the constructor has passed.</p>
-				<pre><code class="lang-javascript">apiRequester.refillTokens()
-</code></pre>
-				<h2 id="vasttrafik-api">vasttrafik.API</h2>
-				<p>The <code>API</code> is used to perform HTTP requests to Västtrafik&#39;s API.</p>
-				<h3 id="usage">Usage</h3>
-				<h4 id="create-an-instance">Create an instance</h4>
-				<pre><code class="lang-javascript"><span class="hljs-keyword">const</span> vasttrafikAPI = <span class="hljs-keyword">new</span> vasttrafik.API(<span class="hljs-string">"&lt;västtrafik API access token&gt;"</span>, vasttrafikAPIRequester)
-</code></pre>
-				<h3 id="methods">Methods</h3>
-				<p><strong>getDepartures</strong></p>
-				<p>Get JSON from Västtrafik&#39;s journey planner API version v2 for the <code>/departureBoard</code> endpoint. Returns the parsed response as an object according to the type <code>vasttrafik.Stop</code>.</p>
-				<pre><code class="lang-javascript">vasttrafikAPI.getDepartures(<span class="hljs-string">"9022014001960001"</span>, <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(), <span class="hljs-number">60</span>, <span class="hljs-literal">false</span>).then(<span class="hljs-function">(<span class="hljs-params">stop</span>) =&gt;</span> {
-    <span class="hljs-comment">// Consume stop</span>
-}).catch(<span class="hljs-function">(<span class="hljs-params">error</span>) =&gt;</span> {
-    <span class="hljs-comment">// Handle errors</span>
-})
-</code></pre>
-				<h2 id="todo">Todo</h2>
-				<ul>
-					<li>Add methods to vasttrafik.API for endpoints in Västtrafik&#39;s journey planner API version v2</li>
-					<li>Write documentation on how to get started using ITG-Infoskarm-API<ul>
-							<li>Dependencies<ul>
-									<li>Node version</li>
-									<li>Firebase</li>
-									<li>And more</li>
-								</ul>
-							</li>
-						</ul>
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Interface for classes that represent a throttler for HTTP requests</p>
+					</div>
+					<dl class="tsd-comment-tags">
+						<dt>since</dt>
+						<dd><p>0.0.1</p>
+						</dd>
+						<dt>interface</dt>
+						<dd><p>HTTPThrottled</p>
+						</dd>
+					</dl>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<span class="target">HTTPThrottled</span>
 					</li>
-					<li>Contribution guidelines</li>
 				</ul>
-				<h2 id="license">License</h2>
-				<p>MIT License</p>
-				<p>Copyright &copy; 2017 Joel Eriksson <a href="&#x6d;&#97;&#105;&#x6c;&#116;&#x6f;&#x3a;&#x6a;&#x6f;&#101;&#x6c;&#46;&#101;&#114;&#x69;&#x6b;&#115;&#x73;&#111;&#110;&#64;&#x70;&#x72;&#x6f;&#x74;&#x6f;&#x6e;&#109;&#97;&#105;&#108;&#46;&#x63;&#x6f;&#x6d;">&#x6a;&#x6f;&#101;&#x6c;&#46;&#101;&#114;&#x69;&#x6b;&#115;&#x73;&#111;&#110;&#64;&#x70;&#x72;&#x6f;&#x74;&#x6f;&#x6e;&#109;&#97;&#105;&#108;&#46;&#x63;&#x6f;&#x6d;</a></p>
-			</div>
+			</section>
+			<section class="tsd-panel">
+				<h3>Implemented by</h3>
+				<ul class="tsd-hierarchy">
+					<li><a href="../classes/_lib_apirequester_apirequester_.apirequester.apirequester.html" class="tsd-signature-type">APIRequester</a></li>
+					<li><a href="../classes/_lib_apirequester_apirequester_.apirequester.baseapirequester.html" class="tsd-signature-type">BaseAPIRequester</a></li>
+				</ul>
+			</section>
+			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section ">
+							<h3>Methods</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_lib_httpthrottler_httpthrottler_.httpthrottler.httpthrottled.html#performrequest" class="tsd-kind-icon">perform<wbr>Request</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_lib_httpthrottler_httpthrottler_.httpthrottler.httpthrottled.html#requestisallowed" class="tsd-kind-icon">request<wbr>IsAllowed</a></li>
+							</ul>
+						</section>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="performrequest" class="tsd-anchor"></a>
+					<h3>perform<wbr>Request</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">perform<wbr>Request<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">request.OptionsWithUrl</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/itggot-joel-eriksson/ITG-Infoskarm-API/blob/67384bf/src/lib/httpthrottler/httpthrottler.ts#L24">lib/httpthrottler/httpthrottler.ts:24</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>options: <span class="tsd-signature-type">request.OptionsWithUrl</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="requestisallowed" class="tsd-anchor"></a>
+					<h3>request<wbr>IsAllowed</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">request<wbr>IsAllowed<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/itggot-joel-eriksson/ITG-Infoskarm-API/blob/67384bf/src/lib/httpthrottler/httpthrottler.ts#L23">lib/httpthrottler/httpthrottler.ts:23</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 			<nav class="tsd-navigation primary">
 				<ul>
 					<li class="globals  ">
-						<a href="globals.html"><em>Globals</em></a>
+						<a href="../globals.html"><em>Globals</em></a>
 					</li>
 					<li class="label tsd-is-external">
 						<span>Internals</span>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_lib_apirequester_apirequester_.html">"lib/apirequester/apirequester"</a>
+						<a href="../modules/_lib_apirequester_apirequester_.html">"lib/apirequester/apirequester"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_lib_auth_.html">"lib/auth"</a>
+						<a href="../modules/_lib_auth_.html">"lib/auth"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_lib_gbgcamera_gbgcamera_.html">"lib/gbgcamera/gbgcamera"</a>
+						<a href="../modules/_lib_gbgcamera_gbgcamera_.html">"lib/gbgcamera/gbgcamera"</a>
+					</li>
+					<li class="current tsd-kind-external-module">
+						<a href="../modules/_lib_httpthrottler_httpthrottler_.html">"lib/httpthrottler/httpthrottler"</a>
+						<ul>
+							<li class="current tsd-kind-module tsd-parent-kind-external-module tsd-is-not-exported">
+								<a href="../modules/_lib_httpthrottler_httpthrottler_.httpthrottler.html">HTTPThrottler</a>
+							</li>
+						</ul>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_lib_httpthrottler_httpthrottler_.html">"lib/httpthrottler/httpthrottler"</a>
+						<a href="../modules/_lib_schoolmeal_schoolmeal_.html">"lib/schoolmeal/schoolmeal"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_lib_schoolmeal_schoolmeal_.html">"lib/schoolmeal/schoolmeal"</a>
+						<a href="../modules/_lib_schoolmeal_types_.html">"lib/schoolmeal/types"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_lib_schoolmeal_types_.html">"lib/schoolmeal/types"</a>
+						<a href="../modules/_lib_vasttrafik_parser_.html">"lib/vasttrafik/parser"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_lib_vasttrafik_parser_.html">"lib/vasttrafik/parser"</a>
+						<a href="../modules/_lib_vasttrafik_types_.html">"lib/vasttrafik/types"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_lib_vasttrafik_types_.html">"lib/vasttrafik/types"</a>
+						<a href="../modules/_lib_vasttrafik_vasttrafik_.html">"lib/vasttrafik/vasttrafik"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_lib_vasttrafik_vasttrafik_.html">"lib/vasttrafik/vasttrafik"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_main_.html">"main"</a>
+						<a href="../modules/_main_.html">"main"</a>
 					</li>
 					<li class="label tsd-is-external">
 						<span>Externals</span>
 					</li>
 					<li class=" tsd-kind-external-module tsd-is-external">
-						<a href="modules/_config_.html">"config"</a>
+						<a href="../modules/_config_.html">"config"</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-interface tsd-parent-kind-module">
+						<a href="_lib_httpthrottler_httpthrottler_.httpthrottler.httpthrottled.html" class="tsd-kind-icon">HTTPThrottled</a>
+						<ul>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="_lib_httpthrottler_httpthrottler_.httpthrottler.httpthrottled.html#performrequest" class="tsd-kind-icon">perform<wbr>Request</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="_lib_httpthrottler_httpthrottler_.httpthrottler.httpthrottled.html#requestisallowed" class="tsd-kind-icon">request<wbr>IsAllowed</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="after-current">
 				</ul>
 			</nav>
 		</div>
@@ -264,7 +294,7 @@
 	</div>
 </footer>
 <div class="overlay"></div>
-<script src="assets/js/main.js"></script>
-<script>if (location.protocol == 'file:') document.write('<script src="assets/js/search.js"><' + '/script>');</script>
+<script src="../assets/js/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="../assets/js/search.js"><' + '/script>');</script>
 </body>
 </html>

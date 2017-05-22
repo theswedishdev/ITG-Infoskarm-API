@@ -44,7 +44,7 @@ Perform a request using [`request-promise-native`](https://www.npmjs.com/package
 ```javascript
 apiRequester.performRequest({
 	url: "https://httpbin.org/get",
-	method: "get"
+	method: "GET"
 }).then((data) => {
 	// Consume data
 }).catch((error) => {

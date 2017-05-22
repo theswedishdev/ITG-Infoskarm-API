@@ -1,6 +1,5 @@
 /**
  * @since 0.0.1
- * @version 0.0.1
  * @file An oAuth2.0 client
  * @module auth
  * @author Joel Eriksson <joel.eriksson@protonmail.com>
@@ -12,7 +11,6 @@ import * as request from "request-promise-native"
 
 /**
  * @since 0.0.1
- * @version 0.0.1
  * @class Auth
  * @classdesc Authenticate using oAuth2.0
  */
@@ -35,7 +33,6 @@ export default class Auth {
 
 	/**
 	 * @since 0.0.1
-	 * @version 0.0.1
 	 * @param {string} accessTokenUrl - URL to POST to get an access token
 	 * @param {string} _consumerKey - Consumer key to use to get access token
 	 * @param {string} _consumerSecret - Consumer secret to use to get access token
@@ -43,18 +40,22 @@ export default class Auth {
 	 */
 	constructor(public accessTokenUrl: string, private _consumerKey: string, private _consumerSecret: string) {
 		this._base64AuthString = new Buffer(`${this._consumerKey}:${this._consumerSecret}`).toString("base64")
+		this._accessTokenExpiresAt = new Date(0)
 	}
 
 	/**
 	 * Get an access token
 	 * @since 0.0.1
-	 * @version 0.0.1
 	 * @method getAccessToken
 	 * @returns {Promise<string>}
 	 * @public
 	 */
 	public getAccessToken(): Promise<string> {
 		return new Promise((resolve, reject) => {
+			if (this.accessTokenIsValid) {
+				resolve(this.accessToken)
+			}
+
 			return request({
 				url: this.accessTokenUrl,
 				method: "POST",
