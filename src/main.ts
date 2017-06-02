@@ -146,20 +146,28 @@ const schoolmealAPIRequester: apirequester.APIRequester = new apirequester.APIRe
  */
 const schoolmealClient: schoolmeal.API = new schoolmeal.API(schoolmealAPIRequester, db.ref("schoolmeal"), config.schoolmeal.client, config.schoolmeal.versionToken)
 
-const getSchoolmeals = () => {
+const getSchoolmeals = (force: boolean = false) => {
 	const schoolmealSchoolId: string = "it-gymnasiet-goteborg"
 
-	schoolmealClient.getMenu(schoolmealSchoolId).then((result) => {
-		db.ref("schoolmeal").child("schools").child(result.school.URLName).child("school").update(result.school).then(() => {
+	schoolmealClient.getMenu(schoolmealSchoolId, force).then((result) => {
+		const schoolRef: admin.database.Reference = db.ref("schoolmeal").child("schools").child(result.school.URLName)
+
+		schoolRef.child("school").update(result.school).then(() => {
 			console.log(`${cTimestamp()} ${cLibName("schoolmeal")} Updated ${cProperty(result.school.name)} information on Firebase.`)
 		}).catch((error) => {
 			console.error(`${cTimestamp()} ${cLibName("schoolmeal")} ${cError(error)}`)
 		})
 
-		db.ref("schoolmeal").child("schools").child(result.school.URLName).child(`${result.year}`).child(`${result.week}`).update(result).then(() => {
+		schoolRef.child(`${result.year}`).child(`${result.week}`).update(result).then(() => {
 			console.log(`${cTimestamp()} ${cLibName("schoolmeal")} Wrote schoolmeal to Firebase. School: ${cProperty(result.school.name)} Week: ${cProperty(result.week.toString())} Year: ${cProperty(result.year.toString())}`)
 		}).catch((error) => {
 			console.error(`${cTimestamp()} ${cLibName("schoolmeal")} Failed to write schoolmeal to Firebase. School: ${cProperty(result.school.name)} Week: ${cProperty(result.week.toString())} Year: ${cProperty(result.year.toString())}`)
+		})
+
+		schoolRef.child("latest").set(result).then(() => {
+			console.log(`${cTimestamp()} ${cLibName("schoolmeal")} Wrote latest schoolmeal to Firebase. School: ${cProperty(result.school.name)} Week: ${cProperty(result.week.toString())} Year: ${cProperty(result.year.toString())}`)
+		}).catch((error) => {
+			console.error(`${cTimestamp()} ${cLibName("schoolmeal")} Failed to write latest schoolmeal to Firebase. School: ${cProperty(result.school.name)} Week: ${cProperty(result.week.toString())} Year: ${cProperty(result.year.toString())}`)
 		})
 	}).catch((error) => {
 		if (error instanceof errors.StatusCodeError) {
@@ -189,6 +197,10 @@ const gbgcameraClient: gbgcamera.API = new gbgcamera.API(gbgcameraAPIRequester, 
 const getCameraImages = () => {
 	const cameraId: number = 17
 	const cameraImageFile: string = path.resolve("images", `${cameraId}.jpg`)
+
+	if (!fs.existsSync(path.resolve("images"))) {
+		fs.mkdirSync(path.resolve("images"))
+	}
 
 	const writeStream: NodeJS.WritableStream = fs.createWriteStream(cameraImageFile)
 	
@@ -229,11 +241,13 @@ const getCameraImages = () => {
 }
 
 /**
- * @constant {Node.}
+ * @constant {NodeJS.Timer}
  */
 const mainInterval: NodeJS.Timer = setInterval(() => {
 	let seconds: number = parseInt(moment().format("s"))
 	let minutes: number = parseInt(moment().format("m"))
+
+	let hhmmss: string = moment().format("HH:mm:ss")
 
 	if (seconds % 30 === 0) {
 		getCameraImages()
@@ -245,5 +259,9 @@ const mainInterval: NodeJS.Timer = setInterval(() => {
 
 	if (minutes % 30 === 0 && seconds % 20 === 0) {
 		getSchoolmeals()
+	}
+
+	if (hhmmss === "00:00:00") {
+		getSchoolmeals(true)
 	}
 }, 1000)

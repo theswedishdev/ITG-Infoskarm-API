@@ -1,14 +1,14 @@
 {
   "name": "itg-infoskarm-api",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "main": "dist/main.js",
   "repository": "https://github.com/itggot-joel-eriksson/ITG-Infoskarm-API.git",
   "author": "Joel Eriksson <joel.eriksson@protonmail.com>",
   "license": "MIT",
   "scripts": {
-    "run": "node dist/main.js",
-    "build": "tsc && node dist/main.js",
-    "dev": "tsc -w",
+    "start": "node dist/main.js",
+    "build": "./node_modules/typescript/bin/tsc",
+    "dev": "./node_modules/typescript/bin/tsc -w",
     "docs": "./node_modules/typedoc/bin/typedoc --rootDir . --out docs --name 'ITG-Infoskarm API' --readme README.md --hideGenerator --ignoreCompilerErrors"
   },
   "dependencies": {
@@ -21,14 +21,15 @@
     "moment-timezone": "^0.5.13",
     "request": "^2.81.0",
     "request-promise-native": "^1.0.3",
-    "slug": "^0.9.1"
+    "slug": "^0.9.1",
+    "typescript": "^2.3.4"
   },
   "devDependencies": {
     "@types/chalk": "^0.4.31",
     "@types/content-type": "^1.0.33",
     "@types/moment": "^2.13.0",
     "@types/moment-timezone": "^0.2.34",
-    "@types/node": "^7.0.5",
+    "@types/node": "^7.0.27",
     "@types/request-promise-native": "^1.0.2",
     "@types/slug": "^0.9.0",
     "typedoc": "^0.5.9"

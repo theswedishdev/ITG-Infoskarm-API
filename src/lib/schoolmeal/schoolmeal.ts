@@ -161,17 +161,18 @@ namespace schoolmeal {
 		/**
 		 * Get menu for a school from Skolmaten's API
 		 * @param {string} school - The school from which to get the menu.
-		 * @param {string} week - Week of the year to get the menu for
-		 * @param {string} year - Year to get the menu for
+		 * @param {boolean} force - Wheater or not to use 'If-Modified-Since' HTTP header
+		 * @param {string} week - Week of the year to get the menu for.
+		 * @param {string} year - Year to get the menu for.
 		 */
-		public getMenu(school: string, week: string = moment().tz("GMT").format("W"), year: string = moment().tz("GMT").format("YYYY")): Promise<schoolmealTypes.Menu.WeekMenu> {			
+		public getMenu(school: string, force: boolean, week: string = moment().tz("GMT").format("W"), year: string = moment().tz("GMT").format("YYYY")): Promise<schoolmealTypes.Menu.WeekMenu> {			
 			return new Promise((resolve, reject) => {
 				let menuResponse
 
 				let lastModified: number = 0
 
 				this._schoolmealRef.child("schools").child(school).child(year).child(week).child("lastmodified").once("value", (snap) => {
-					if (typeof snap.val() === "number") {
+					if (typeof snap.val() === "number" && !force) {
 						lastModified = snap.val()
 					}
 
