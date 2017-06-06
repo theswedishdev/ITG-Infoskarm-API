@@ -1,0 +1,13 @@
+apps:
+  - script: ./dist/main.js
+    name: ITG-Infoskarm-API
+    max_memory_restart: 300M
+    max_restarts: 10
+    instances: 1
+    exec_mode: cluster
+    env:
+      NODE_ENV: development
+    env_staging:
+      NODE_ENV: production
+    env_production:
+      NODE_ENV: production

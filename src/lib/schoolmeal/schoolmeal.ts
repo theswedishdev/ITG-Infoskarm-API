@@ -57,7 +57,7 @@ namespace schoolmeal {
 			moment.tz.setDefault("GMT")
 		}
 
-		private _getMenu(school: string, week: string, year: string, lastModified: number, resolve: Function, reject: Function) {
+		private _getMenu(school: string, force: boolean, week: string, year: string, lastModified: number, resolve: Function, reject: Function) {
 			this.apiRequester.performRequest({
 				url : `${this.baseURL}/menu`,
 				method: "GET",
@@ -165,7 +165,7 @@ namespace schoolmeal {
 		 * @param {string} week - Week of the year to get the menu for.
 		 * @param {string} year - Year to get the menu for.
 		 */
-		public getMenu(school: string, force: boolean, week: string = moment().tz("GMT").format("W"), year: string = moment().tz("GMT").format("YYYY")): Promise<schoolmealTypes.Menu.WeekMenu> {			
+		public getMenu(school: string, force: boolean = false, week: string = moment().tz("GMT").format("W"), year: string = moment().tz("GMT").format("YYYY")): Promise<schoolmealTypes.Menu.WeekMenu> {			
 			return new Promise((resolve, reject) => {
 				let menuResponse
 
@@ -176,9 +176,9 @@ namespace schoolmeal {
 						lastModified = snap.val()
 					}
 
-					this._getMenu(school, week, year, lastModified, resolve, reject)
+					this._getMenu(school, force, week, year, lastModified, resolve, reject)
 				}, (error) => {
-					this._getMenu(school, week, year, lastModified, resolve, reject)
+					this._getMenu(school, force, week, year, lastModified, resolve, reject)
 				})
 			})
 		}
