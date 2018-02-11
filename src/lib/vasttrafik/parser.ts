@@ -2,12 +2,13 @@
  * Västtrafik API wrapper parser
  * @since 0.0.1
  * @module vasttrafik
- * @author Joel Eriksson <joel.eriksson@protonmail.com>
- * @copyright 2017 Joel Eriksson <joel.eriksson@protonmail.com>
+ * @author Joel Ericsson <joel.eriksson@protonmail.com>
+ * @copyright 2017-2018 Joel Ericsson <joel.eriksson@protonmail.com>
  * @license MIT
  */
 
 import * as moment from "moment"
+import * as sluggo from "sluggo"
 import { vasttrafik as vasttrafikTypes } from "./types"
 
 /**
@@ -48,6 +49,8 @@ namespace vasttrafik {
 			departures.forEach((departure, i) => {
 				let shortDirection = departure.direction.indexOf(" via") > 0 ? departure.direction.substr(0, departure.direction.indexOf(" via")) : departure.direction
 				shortDirection = shortDirection.indexOf(",") > 0 ? shortDirection.substr(0, shortDirection.indexOf(",")) : shortDirection
+
+				const shortDirectionSlug: string = sluggo(shortDirection)
 
 				let realtime = true
 				let date: string
@@ -110,11 +113,11 @@ namespace vasttrafik {
 					parsedDepartures[departure.sname] = {}
 				}
 
-				if (!parsedDepartures[departure.sname].hasOwnProperty(shortDirection.toLowerCase())) {
-					parsedDepartures[departure.sname][shortDirection.toLowerCase()] = []
+				if (!parsedDepartures[departure.sname].hasOwnProperty(shortDirectionSlug)) {
+					parsedDepartures[departure.sname][shortDirectionSlug] = []
 				}
 
-				parsedDepartures[departure.sname][shortDirection.toLowerCase()].push(parsedDeparture)
+				parsedDepartures[departure.sname][shortDirectionSlug].push(parsedDeparture)
 			})
 
 			let result: vasttrafikTypes.Stop = {

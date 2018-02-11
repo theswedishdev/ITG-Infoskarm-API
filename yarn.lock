@@ -259,10 +259,6 @@
   dependencies:
     "@types/node" "*"
 
-"@types/slug@^0.9.0":
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/@types/slug/-/slug-0.9.0.tgz#8d8baba7e4acbea2d199e8dee6633083ea89f7f8"
-
 abbrev@1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.1.1.tgz#f8f2c887ad10bf67f634f005b6987fed3179aac8"
@@ -413,13 +409,6 @@ bcrypt-pbkdf@^1.0.0:
   dependencies:
     tweetnacl "^0.14.3"
 
-better-console@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/better-console/-/better-console-1.0.0.tgz#cd696fa385eba396b8e0fdf54f75afddda6dd2a5"
-  dependencies:
-    chalk "^1.1.3"
-    cli-table "~0.3.1"
-
 block-stream@*:
   version "0.0.9"
   resolved "https://registry.yarnpkg.com/block-stream/-/block-stream-0.0.9.tgz#13ebfe778a03205cfe03751481ebb4b3300c126a"
@@ -519,12 +508,6 @@ chalk@^1.1.3:
     strip-ansi "^3.0.0"
     supports-color "^2.0.0"
 
-cli-table@~0.3.1:
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/cli-table/-/cli-table-0.3.1.tgz#f53b05266a8b1a0b934b3d0821e6e2dc5914ae23"
-  dependencies:
-    colors "1.0.3"
-
 cliui@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/cliui/-/cliui-2.1.0.tgz#4b475760ff80264c762c3a1719032e91c7fea0d1"
@@ -548,10 +531,6 @@ co@^4.6.0:
 code-point-at@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
-
-colors@1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/colors/-/colors-1.0.3.tgz#0433f44d809680fdeb60ed260f1b0c262e82a40b"
 
 colour@~0.7.1:
   version "0.7.1"
@@ -1929,11 +1908,9 @@ slide@^1.1.5:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/slide/-/slide-1.1.6.tgz#56eb027d65b4d2dce6cb2e2d32c4d4afc9e1d707"
 
-slug@^0.9.1:
-  version "0.9.1"
-  resolved "https://registry.yarnpkg.com/slug/-/slug-0.9.1.tgz#af08f608a7c11516b61778aa800dce84c518cfda"
-  dependencies:
-    unicode ">= 0.3.1"
+sluggo@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/sluggo/-/sluggo-0.2.0.tgz#5d0bcb28d70c8c1eee773feec626d15189689cbf"
 
 snakeize@^0.1.0:
   version "0.1.0"
@@ -2167,10 +2144,6 @@ uglify-to-browserify@~1.0.0:
 uid-number@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/uid-number/-/uid-number-0.0.6.tgz#0ea10e8035e8eb5b8e4449f06da1c730663baa81"
-
-"unicode@>= 0.3.1":
-  version "9.0.1"
-  resolved "https://registry.yarnpkg.com/unicode/-/unicode-9.0.1.tgz#104706272c6464c574801be1b086f7245cf25158"
 
 unique-string@^1.0.0:
   version "1.0.0"

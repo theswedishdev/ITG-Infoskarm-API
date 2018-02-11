@@ -3,7 +3,7 @@ import * as path from "path"
 
 import * as chalk from "chalk"
 import * as admin from "firebase-admin"
-import * as slug from "slug"
+import * as sluggo from "sluggo"
 import * as request from "request"
 import * as errors from "request-promise-native/errors"
 import * as moment from "moment-timezone"
@@ -95,9 +95,7 @@ const getDepartures = () => {
 
 		results.forEach((result, i) => {
 			if (result && result.stop.name) {
-				const parsedDeparturesKey: string = slug(result.stop.name, {
-					lower: true,
-				})
+				const parsedDeparturesKey: string = sluggo(result.stop.name)
 
 				vasttrafikRef.child("stopsLookup").child(result.stop.id).set(parsedDeparturesKey).catch((error) => {
 					console.error(console.error(`${cTimestamp()} ${cLibName("vasttrafik")} Could not add ${cProperty(result.stop.id)}: ${cProperty(parsedDeparturesKey)} to Firebase.`))
@@ -135,7 +133,7 @@ const schoolmealAPIRequester: apirequester.APIRequester = new apirequester.APIRe
  * An instance of [[schoolmeal.API]] to handle requests to Skolmaten's APIs
  * @constant {schoolmeal.API}
  */
-const schoolmealClient: schoolmeal.API = new schoolmeal.API(schoolmealAPIRequester, db.ref("schoolmeal"), config.schoolmeal.client, config.schoolmeal.versionToken)
+const schoolmealClient: schoolmeal.API = new schoolmeal.API(schoolmealAPIRequester, config.schoolmeal.client, config.schoolmeal.versionToken)
 
 const getSchoolmeals = (force: boolean = false) => {
 	const schoolmealSchoolId: string = "it-gymnasiet-goteborg"

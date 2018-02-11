@@ -12,7 +12,6 @@
     "docs": "./node_modules/typedoc/bin/typedoc --rootDir . --out docs --name 'ITG-Infoskarm API' --readme README.md --hideGenerator --ignoreCompilerErrors"
   },
   "dependencies": {
-    "better-console": "^1.0.0",
     "chalk": "^1.1.3",
     "content-type": "^1.0.2",
     "firebase-admin": "^5.8.2",
@@ -20,7 +19,7 @@
     "moment-timezone": "^0.5.13",
     "request": "^2.81.0",
     "request-promise-native": "^1.0.3",
-    "slug": "^0.9.1",
+    "sluggo": "^0.2.0",
     "typescript": "^2.3.4"
   },
   "devDependencies": {
@@ -30,7 +29,6 @@
     "@types/moment-timezone": "^0.2.34",
     "@types/node": "^7.0.27",
     "@types/request-promise-native": "^1.0.2",
-    "@types/slug": "^0.9.0",
     "typedoc": "^0.5.9"
   }
 }

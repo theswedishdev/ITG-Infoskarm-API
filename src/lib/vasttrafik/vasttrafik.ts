@@ -15,8 +15,6 @@ import { HTTPThrottler } from "../httpthrottler/httpthrottler"
 import { vasttrafik as vasttrafikTypes } from "./types"
 import { vasttrafik as vasttrafikParser } from "./parser"
 
-import console = require("better-console")
-
 /**
  * @since 0.0.1
  * @namespace vasttrafik
