@@ -1,4 +1,6 @@
 # ITG-Infoskarm API
+[![NSP Status](https://nodesecurity.io/orgs/itg-infoskarm/projects/03784c89-6ecb-460d-9aa0-14b3e631ccc8/badge)](https://nodesecurity.io/orgs/itg-infoskarm/projects/03784c89-6ecb-460d-9aa0-14b3e631ccc8)
+
 This project is a working WIP. It does not have all planned features.
 
 # API
