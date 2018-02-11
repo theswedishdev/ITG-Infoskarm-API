@@ -7,7 +7,6 @@ import * as slug from "slug"
 import * as request from "request"
 import * as errors from "request-promise-native/errors"
 import * as moment from "moment-timezone"
-import * as storage from "@google-cloud/storage"
 
 import Config from "./config"
 import Auth from "./lib/auth"
@@ -45,8 +44,9 @@ const cLibName = (lib: string): string => {
 const config: Config.Config = require(path.resolve("config", "config.json"))
 
 admin.initializeApp({
-	credential: admin.credential.cert(config.firebase.credential),
+	credential: admin.credential.cert(path.resolve("config", "firebaseServiceAccount.json")),
 	databaseURL: config.firebase.databaseURL,
+	storageBucket: config.firebase.storageBucket,
 })
 
 /**
@@ -62,18 +62,9 @@ const db: admin.database.Database = admin.database()
 const rootRef: admin.database.Reference = db.ref()
 
 /**
- * Google cloud storage 
- * @constant
+ * Firebase storage SDK
  */
-const gcs = storage({
-	projectId: config.firebase.credential.project_id,
-	credentials: {
-		client_email: config.firebase.credential.client_email,
-		private_key: config.firebase.credential.private_key,
-	},
-})
-
-const bucket = gcs.bucket(config.firebase.storage.bucket)
+const bucket = admin.storage().bucket();
 
 /**
  * An instance of [[Auth]] to get an access token for Västtrafik's APIs
@@ -105,7 +96,7 @@ const getDepartures = () => {
 		results.forEach((result, i) => {
 			if (result && result.stop.name) {
 				const parsedDeparturesKey: string = slug(result.stop.name, {
-					lower: true
+					lower: true,
 				})
 
 				vasttrafikRef.child("stopsLookup").child(result.stop.id).set(parsedDeparturesKey).catch((error) => {
@@ -210,32 +201,25 @@ const getCameraImages = () => {
 		bucket.upload(cameraImageFile, {
 			destination: `gbgcamera/${cameraId}/${moment.tz().tz("Europe/Stockholm").format("YYYY-MM-DD_HH-mm")}.jpg`,
 			gzip: true,
-		}, (error, file, apiResponse) => {
-			if (error) {
-				console.error(`${cTimestamp()} ${cLibName("gbgcamera")} ${cError(error)}`)
-				
-				return
-			}
-
-			file.getSignedUrl({
+		}).then((data) => {
+			const file = data[0];
+			return file.getSignedUrl({
 				action: "read",
-				expires: moment.tz().tz("Europe/Stockholm").add(7, "d").toDate()
-			}, (error, url) => {
-				if (error) {
-					console.error(`${cTimestamp()} ${cLibName("gbgcamera")} ${cError(error)}`)
-
-					return
-				}
-
-				rootRef.child("gbgcamera").child(cameraId.toString()).set({
-					image: url,
-					lastmodified: admin.database.ServerValue.TIMESTAMP
-				}).then(() => {
-					console.log(`${cTimestamp()} ${cLibName("gbgcamera")} Wrote camera ${cProperty(cameraId.toString())} to Firebase`)
-				}).catch((error) => {
-					console.error(`${cTimestamp()} ${cLibName("gbgcamera")} ${cError(error)}`)
-				})
+				expires: moment.tz().tz("Europe/Stockholm").add(7, "d").toISOString()
 			})
+		}).then((data) => {
+			const url = data[0];
+
+			return rootRef.child("gbgcamera").child(cameraId.toString()).set({
+				image: url,
+				lastmodified: admin.database.ServerValue.TIMESTAMP
+			})
+		}).then(() => {
+			console.log(`${cTimestamp()} ${cLibName("gbgcamera")} Wrote camera ${cProperty(cameraId.toString())} to Firebase`)
+		}).catch((error) => {
+			console.error(`${cTimestamp()} ${cLibName("gbgcamera")} ${cError(error)}`)
+				
+			return
 		})
 	})
 }
@@ -257,7 +241,7 @@ const mainInterval: NodeJS.Timer = setInterval(() => {
 		getDepartures()
 	}
 
-	if (minutes % 30 === 0 && seconds % 20 === 0) {
+	if (minutes % 30 === 0 && seconds === 0) {
 		getSchoolmeals()
 	}
 

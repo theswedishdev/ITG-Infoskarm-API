@@ -501,6 +501,7 @@ __pycache__/
 
 # Secret files
 config/config.json
+config/firebaseServiceAccount.json
 
 # Do not include 'dist'-folder while in development
 dist/**
