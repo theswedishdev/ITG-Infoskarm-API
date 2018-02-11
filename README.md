@@ -107,4 +107,4 @@ vasttrafikAPI.getDepartures("9022014001960001", new Date(), 60, false).then((sto
 ## License
 MIT License
 
-Copyright &copy; 2017 Joel Eriksson <joel.eriksson@protonmail.com>
+Copyright &copy; 2017-2018 Joel Ericsson <joel.eriksson@protonmail.com>
