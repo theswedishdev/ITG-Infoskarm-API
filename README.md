@@ -22,7 +22,7 @@ class FooAPIRequester extends BaseAPIRequester {
 	}
 
 	public performRequest(options) {
-		return request(options).promise()
+		return axios(options)
 	}
 }
 ```
@@ -42,13 +42,13 @@ const vasttrafikAPIRequester = new vasttrafik.APIRequester(10, 60000)
 
 __performRequest__
 
-Perform a request using [`request-promise-native`](https://www.npmjs.com/package/request-promise-native).
+Perform a request using [`axios`](https://yarnpkg.com/en/package/axios).
 ```javascript
 apiRequester.performRequest({
 	url: "https://httpbin.org/get",
 	method: "GET"
-}).then((data) => {
-	// Consume data
+}).then((response) => {
+	// Consume response
 }).catch((error) => {
 	// Handle errors
 })

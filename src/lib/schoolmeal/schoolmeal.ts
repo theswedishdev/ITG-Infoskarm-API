@@ -8,8 +8,6 @@
  */
 
 import * as moment from "moment-timezone"
-import * as contentType from "content-type"
-import * as request from "request-promise-native"
 
 import { HTTPThrottler } from "../httpthrottler/httpthrottler"
 import { schoolmeal as schoolmealTypes } from "./types"
@@ -56,40 +54,26 @@ namespace schoolmeal {
 
 		protected _getMenu(school: string, force: boolean, week: string, year: string, lastModified: number, resolve: Function, reject: Function) {
 			this.apiRequester.performRequest({
-				url : `${this.baseURL}/menu`,
 				method: "GET",
+				url : `${this.baseURL}/menu`,
+				responseType: "json",
 				headers: {
 					"If-Modified-Since": moment(lastModified, "x").tz("GMT").format("ddd, DD MMM YYYY HH:mm:ss z")
 				},
-				qs: {
+				params: {
 					client: this._client,
 					clientVersion: this._versionToken ? this._versionToken : undefined,
 					school: school,
 					week: week,
 					year: year,
 				},
-				transform: (body, response, resolveWithFullResponse) => {						
-					if (response.statusCode === 304) {
-						return body
-					}
+			}).then((response) => {
+				const apiData: schoolmealTypes.RawAPI.API = response.data
 
-					if (contentType.parse(response.headers["content-type"]).type === "application/json") {
-						let result = JSON.parse(body)
-
-						if (response.headers.hasOwnProperty("last-modified")) {
-							const lastModifiedMoment = moment(response.headers["last-modified"], "ddd, DD MMM YYYY HH:mm:ss z").tz("GMT")
-							
-							result.lastModified = lastModifiedMoment
-							this.lastModified = parseInt(lastModifiedMoment.format("x"))
-						}
-
-						return JSON.stringify(result)
-					} else {
-						throw new Error("Invalid content-type")
-					}
+				let lastModified = 0
+				if (response.headers.hasOwnProperty("last-modified")) {
+					this.lastModified = parseInt(moment(response.headers["last-modified"], "ddd, DD MMM YYYY HH:mm:ss z").tz("GMT").format('x'))
 				}
-			}).then((data) => {
-				const apiData: schoolmealTypes.RawAPI.API = JSON.parse(data)
 
 				const school: schoolmealTypes.School = {
 					id: apiData.school.id,
@@ -103,7 +87,7 @@ namespace schoolmeal {
 					week: parseInt(week),
 					school: school,
 					days: {},
-					lastmodified: new Date(apiData.lastModified).getTime(),
+					lastModified: this.lastModified,
 				}
 
 				apiData.weeks[0].days.forEach((day: schoolmealTypes.RawAPI.Day, i: number) => {

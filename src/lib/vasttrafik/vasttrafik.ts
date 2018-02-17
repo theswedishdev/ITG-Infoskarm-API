@@ -2,13 +2,12 @@
  * Main file for the Västtrafik API wrapper
  * @since 0.0.1
  * @module vasttrafik
- * @author Joel Eriksson <joel.eriksson@protonmail.com>
- * @copyright 2017 Joel Eriksson <joel.eriksson@protonmail.com>
+ * @author Joel Ericsson <joel.eriksson@protonmail.com>
+ * @copyright 2017-2018 Joel Ericsson <joel.eriksson@protonmail.com>
  * @license MIT
  */
 
-import * as moment from "moment"
-import * as request from "request-promise-native"
+import * as moment from "moment-timezone"
 
 import Auth from "../auth"
 import { HTTPThrottler } from "../httpthrottler/httpthrottler"
@@ -72,9 +71,10 @@ namespace vasttrafik {
 		private _getRawDepartures(stop: string, datetime: moment.Moment, timeSpan: number = 60, needJourneyDetail: boolean = false): Promise<any> {
 			return this._auth.getAccessToken().then((accessToken) => {
 				return this.apiRequester.performRequest({
-					url: `${this.baseURL}/departureBoard`,
 					method: "GET",
-					qs: {
+					url: `${this.baseURL}/departureBoard`,
+					responseType: "json",
+					params: {
 						id: stop,
 						date: datetime.format("YYYY-MM-DD"),
 						time: datetime.format("HH:mm:ss"),
@@ -105,11 +105,11 @@ namespace vasttrafik {
 			datetime = datetime.tz("Europe/Stockholm")
 
 			return new Promise((resolve, reject) => {
-				this._getRawDepartures(stop, datetime, timeSpan, needJourneyDetail).then((body) => {
-					let data = JSON.parse(body)
-					let departureBoard: vasttrafikTypes.DepartureBoard = data.DepartureBoard
+				this._getRawDepartures(stop, datetime, timeSpan, needJourneyDetail).then((response) => {
+					const data = response.data
+					const departureBoard: vasttrafikTypes.DepartureBoard = data.DepartureBoard
 
-					let result: vasttrafikTypes.Stop = vasttrafikParser.Parser.departures(departureBoard, stop)
+					const result: vasttrafikTypes.Stop = vasttrafikParser.Parser.departures(departureBoard, stop)
 
 					return resolve(result)
 				}).catch(function(error) {

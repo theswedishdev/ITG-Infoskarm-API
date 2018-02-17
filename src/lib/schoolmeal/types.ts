@@ -29,7 +29,6 @@ declare namespace schoolmeal {
 			school: School
 			id: number
 			bulletins: Bulletin[]
-			lastModified: string
 		}
 
 		export interface Week {
@@ -63,7 +62,7 @@ declare namespace schoolmeal {
 				[dddd: string]: Menu
 			}
 			bulletins?: Bulletin[]
-			lastmodified: number
+			lastModified: number
 		}
 
 		export interface Menu {

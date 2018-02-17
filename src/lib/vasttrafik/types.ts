@@ -17,7 +17,7 @@ declare namespace vasttrafik {
 	 */
 	export type DepartureBoard = {
 		errorText?: string,
-		Departure?: RawDeparture[]
+		Departure?: RawDeparture | RawDeparture[]
 		error?: string
 		serverdate?: string
 		servertime?: string

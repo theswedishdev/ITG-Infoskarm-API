@@ -2,12 +2,12 @@
  * @since 0.0.1
  * @file An oAuth2.0 client
  * @module auth
- * @author Joel Eriksson <joel.eriksson@protonmail.com>
- * @copyright 2017 Joel Eriksson <joel.eriksson@protonmail.com>
+ * @author Joel Ericsson <joel.eriksson@protonmail.com>
+ * @copyright 2017-2018 Joel Ericsson <joel.eriksson@protonmail.com>
  * @license MIT
  */
 
-import * as request from "request-promise-native"
+import * as axios from "axios"
 
 /**
  * @since 0.0.1
@@ -56,19 +56,18 @@ export default class Auth {
 				resolve(this.accessToken)
 			}
 
-			return request({
-				url: this.accessTokenUrl,
+			return axios.default.request({
 				method: "POST",
+				url: this.accessTokenUrl,
+				responseType: "json",
 				headers: {
 					"Content-Type": "application/x-www-form-urlencoded",
-					"Authorization": `Basic ${this._base64AuthString}`
+					"Authorization": `Basic ${this._base64AuthString}`,
 				},
-				form: {
-					"grant_type": "client_credentials"
+				params: {
+					grant_type: "client_credentials"
 				}
-			}).then((body) => {
-				const data = JSON.parse(body)
-
+			}).then(({ data }) => {
 				this._accessToken = data.access_token
 				this._accessTokenExpiresAt = new Date(Date.now() + (parseInt(data.expires_in) * 1000))
 

@@ -504,7 +504,7 @@ config/config.json
 config/firebaseServiceAccount.json
 
 # Do not include 'dist'-folder while in development
-dist/**
+dist
 
 # Images cache
-images/**
+images

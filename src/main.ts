@@ -1,11 +1,9 @@
 import * as fs from "fs"
 import * as path from "path"
 
-import * as chalk from "chalk"
+import chalk from "chalk"
 import * as admin from "firebase-admin"
-import * as sluggo from "sluggo"
-import * as request from "request"
-import * as errors from "request-promise-native/errors"
+import * as urlSlug from "url-slug"
 import * as moment from "moment-timezone"
 
 import Config from "./config"
@@ -84,42 +82,75 @@ const vasttrafikAPIRequester: apirequester.APIRequester = new apirequester.APIRe
  */
 const vasttrafikAPI: vasttrafik.API = new vasttrafik.API(vasttrafikAPIRequester, vasttrafikAuth)
 
+type StopToFetch = {
+	id: string
+	name: string
+	active: boolean
+	timeSpan: number
+}
+
+/**
+ * A array containing the stops that should be fetched, kept in sync with Firebase
+ */
+let stopsToFetch: StopToFetch[] = []
+
+rootRef.child("vasttrafik").child("stops").on("value", (snap) => {
+	const stops = snap.val()
+	stopsToFetch = []
+
+	Object.keys(stops).forEach((stopSlug: string) => {
+		const stop: StopToFetch = stops[stopSlug]
+		if (stop.active) {
+			stopsToFetch.push(stop)
+		}
+	})
+})
+
 const getDepartures = () => {
-	Promise.all([
-		vasttrafikAPI.getDepartures("9022014001960001"), // chalmers-goteborg
-		vasttrafikAPI.getDepartures("9022014003760001"), // kapellplatsen-goteborg
-		vasttrafikAPI.getDepartures("9022014001970001"), // chalmers-tvargata-goteborg
-		vasttrafikAPI.getDepartures("9022014001961001"), // chalmersplatsen-goteborg
-	]).then((results) => {
+	/**
+	 * An array of promises to fetch Västtrafik stops
+	 * @constant {Promise[]}
+	 */
+	const stopFetches = [];
+	stopsToFetch.forEach((stop) => {
+		stopFetches.push(vasttrafikAPI.getDepartures(stop.id, moment(), stop.timeSpan))
+	})
+
+	Promise.all(stopFetches).then((results) => {
 		const vasttrafikRef: admin.database.Reference = rootRef.child("vasttrafik")
 
 		results.forEach((result, i) => {
 			if (result && result.stop.name) {
-				const parsedDeparturesKey: string = sluggo(result.stop.name)
+				const parsedDeparturesKey: string = urlSlug(result.stop.name)
 
 				vasttrafikRef.child("stopsLookup").child(result.stop.id).set(parsedDeparturesKey).catch((error) => {
-					console.error(console.error(`${cTimestamp()} ${cLibName("vasttrafik")} Could not add ${cProperty(result.stop.id)}: ${cProperty(parsedDeparturesKey)} to Firebase.`))
+					console.error(`${cTimestamp()} ${cLibName("vasttrafik")} Could not add ${cProperty(result.stop.id)}: ${cProperty(parsedDeparturesKey)} to Firebase.`)
 				})
 
 				vasttrafikRef.child("departures").child(parsedDeparturesKey).set(result).then(() => {
 					console.log(`${cTimestamp()} ${cLibName("vasttrafik")} Wrote stop ${cProperty(result.stop.shortName)} to Firebase.`)
 				}).catch((error) => {
-					console.error(console.error(`${cTimestamp()} ${cLibName("vasttrafik")} ${cError(error)}`))
+					console.error(`${cTimestamp()} ${cLibName("vasttrafik")} ${cError(error)}`)
 				})
 			} else if (result.stop.id) {
 				vasttrafikRef.child("stopsLookup").child(result.stop.id).once("value", (stopLookupSnap) => {
-					vasttrafikRef.child("departures").child(stopLookupSnap.val()).child("stop").once("value", (stopSnap) => {
-						vasttrafikRef.child("departures").child(stopLookupSnap.val()).child("departures").set(null).then(() => {
+					const stopKey = stopLookupSnap.val()
+					if (!stopKey) {
+						return
+					}
+
+					vasttrafikRef.child("departures").child(stopKey).child("stop").once("value", (stopSnap) => {
+						vasttrafikRef.child("departures").child(stopKey).child("departures").set(null).then(() => {
 							console.log(`${cTimestamp()} ${cLibName("vasttrafik")} Wrote stop ${cProperty(stopSnap.val().shortName)} to Firebase.`)
 						}).catch((error) => {
-							console.error(console.error(`${cTimestamp()} ${cLibName("vasttrafik")} ${cError(error)}`))
+							console.error(`${cTimestamp()} ${cLibName("vasttrafik")} ${cError(error)}`)
 						})
 					})
 				})
 			}
 		})
 	}).catch((error) => {
-		console.error(console.error(`${cTimestamp()} ${cLibName("vasttrafik")} ${cError(error)}`))
+		console.error(`${cTimestamp()} ${cLibName("vasttrafik")} ${cError(error)}`)
 	})
 }
 
@@ -159,15 +190,17 @@ const getSchoolmeals = (force: boolean = false) => {
 			console.error(`${cTimestamp()} ${cLibName("schoolmeal")} Failed to write latest schoolmeal to Firebase. School: ${cProperty(result.school.name)} Week: ${cProperty(result.week.toString())} Year: ${cProperty(result.year.toString())}`)
 		})
 	}).catch((error) => {
-		if (error instanceof errors.StatusCodeError) {
+		console.error(error)
+
+		/* if (error instanceof errors.StatusCodeError) {
 			if (error.statusCode === 304) {
 				console.error(`${cTimestamp()} ${cLibName("schoolmeal")} Menu is already up to date from Skolmaten's API.`)
 			} else {
-				console.error(`${cTimestamp()} ${cLibName("schoolmeal")} ${cError("StatusCodeError")} when trying to fetch menu from Skolmaten's API. HTTP Status code: ${cError(error.statusCode)}`)
+				console.error(`${cTimestamp()} ${cLibName("schoolmeal")} ${cError("StatusCodeError")} when trying to fetch menu from Skolmaten's API. HTTP Status code: ${cError(error.statusCode.toString())}`)
 			}
 		} else {
 			console.error(`${cTimestamp()} ${cLibName("schoolmeal")} ${cError(error)}`)
-		}
+		} */
 	})
 }
 
@@ -192,8 +225,10 @@ const getCameraImages = () => {
 	}
 
 	const writeStream: NodeJS.WritableStream = fs.createWriteStream(cameraImageFile)
-	
-	gbgcameraClient.getCameraImage(cameraId).pipe(writeStream)
+
+	gbgcameraClient.getCameraImage(cameraId).then((response) => {
+		response.data.pipe(writeStream)
+	})
 
 	writeStream.on("finish", () => {
 		bucket.upload(cameraImageFile, {
@@ -213,7 +248,7 @@ const getCameraImages = () => {
 				lastmodified: admin.database.ServerValue.TIMESTAMP
 			})
 		}).then(() => {
-			console.log(`${cTimestamp()} ${cLibName("gbgcamera")} Wrote camera ${cProperty(cameraId.toString())} to Firebase`)
+			console.log(`${cTimestamp()} ${cLibName("gbgcamera")} Wrote camera ${cProperty(cameraId.toString())} to Firebase.`)
 		}).catch((error) => {
 			console.error(`${cTimestamp()} ${cLibName("gbgcamera")} ${cError(error)}`)
 				

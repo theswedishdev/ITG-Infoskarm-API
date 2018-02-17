@@ -1,11 +1,12 @@
 /**
  * Main file for the APIRequester
  * @module apirequester
- * @author Joel Eriksson <joel.eriksson@protonmail.com>
- * @copyright 2017 Joel Eriksson <joel.eriksson@protonmail.com>
+ * @author Joel Ericsson <joel.eriksson@protonmail.com>
+ * @copyright 2017-2018 Joel Ericsson <joel.eriksson@protonmail.com>
  * @license MIT
  */
-import * as request from "request-promise-native"
+
+import * as axios from "axios"
 import { HTTPThrottler } from "../httpthrottler/httpthrottler"
 
 /**
@@ -34,7 +35,7 @@ namespace apirequester {
 		 * @since 0.0.3
 		 * @throws Error
 		 */
-		public performRequest(options: request.OptionsWithUrl) {
+		public performRequest(options: axios.AxiosRequestConfig) {
 			throw new Error("requestIsAllowed has not been implemented in BaseAPIRequester")
 		}
 	}
@@ -59,16 +60,18 @@ namespace apirequester {
 		 */
 		public tokens: number
 
+		private _httpClient: axios.AxiosInstance
+
 		/**
 		 * @since 0.0.1
 		 * @param {number} maxTokens - The amount of tokens that can be consumed during the interval
 	     * @param {number} tokensRefillRateInMs - How often tokens will be refilled, in milliseconds
-		 * @returns {vasttrafik.BaseAPIRequester}
 		 */
 		constructor(public maxTokens: number, public tokensRefillRateInMs: number) {
 			super()
 			this.lastTokenRefill = new Date(Date.now())
 			this.tokens = maxTokens
+			this._httpClient = axios.default.create()
 		}
 
 		/**
@@ -109,14 +112,14 @@ namespace apirequester {
 		 * Performs the request if the tokenbucket has tokens left to use
 		 * @since 0.0.1
 		 * @method performRequest
-		 * @param {request.OptionsWithUrl} options
+		 * @param {axios.AxiosRequestConfig} options
 		 * @public
 		 */
-		public performRequest(options: request.OptionsWithUrl) {
+		public performRequest(options: axios.AxiosRequestConfig) {
 			if (!this.requestIsAllowed()) {
 				return Promise.reject(new Error("This request has been HTTPThrottled and will not be handled"))	
 			} else {
-				return request(options)
+				return this._httpClient.request(options)
 			}
 		}
 	}
