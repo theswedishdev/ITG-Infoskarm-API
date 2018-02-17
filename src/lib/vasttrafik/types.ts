@@ -2,8 +2,8 @@
  * Västtrafik API wrapper types
  * @since 0.0.1
  * @module vasttrafik
- * @author Joel Eriksson <joel.eriksson@protonmail.com>
- * @copyright 2017 Joel Eriksson <joel.eriksson@protonmail.com>
+ * @author Joel Ericsson <joel.eriksson@protonmail.com>
+ * @copyright 2017-2018 Joel Ericsson <joel.eriksson@protonmail.com>
  * @license MIT
  */
 
@@ -11,13 +11,13 @@
  * @since 0.0.1
  * @namespace vasttrafik
  */
-namespace vasttrafik {
+declare namespace vasttrafik {
 	/**
 	 * @since 0.0.1
 	 */
 	export type DepartureBoard = {
 		errorText?: string,
-		Departure?: RawDeparture[]
+		Departure?: RawDeparture | RawDeparture[]
 		error?: string
 		serverdate?: string
 		servertime?: string

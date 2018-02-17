@@ -1,4 +1,3 @@
-import * as request from "request-promise-native"
 import { HTTPThrottler } from "../httpthrottler/httpthrottler"
 
 namespace gbgcamera {
@@ -14,14 +13,18 @@ namespace gbgcamera {
 
 		public getCameraImage(camera: string | number) {
 			return this.apiRequester.performRequest({
+				method: "GET",
 				url: `${this.cameraImageURL}/${camera}`,
+				responseType: "stream",
 			})
 		}
 
 		public getCameras(): Promise<any> {
 			return this.apiRequester.performRequest({
+				method: "GET",
 				url: this.trafficCamerasURL,
-				qs: {
+				responseType: "json",
+				params: {
 					format: "json"
 				}
 			})

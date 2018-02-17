@@ -1,28 +1,12 @@
 /**
  * Namespace for the config.json file
  * @since 0.0.1
- * @namespace config
+ * @namespace Config
  */
-namespace Config {
-	export type FirebaseCredentials = {
-		type: string
-		project_id: string
-		private_key_id: string
-		private_key: string
-		client_email: string
-		client_id: string
-		auth_uri: string
-		token_uri: string
-		auth_provider_x509_cert_url: string
-		client_x509_cert_url: string
-	}
-
+declare namespace Config {
 	export type FirebaseConfig = {
 		databaseURL: string
-		credential: FirebaseCredentials
-		storage: {
-			bucket: string
-		}
+		storageBucket: string
 	}
 
 	export type SchoolmealConfig = {

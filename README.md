@@ -1,4 +1,6 @@
 # ITG-Infoskarm API
+[![NSP Status](https://nodesecurity.io/orgs/itg-infoskarm/projects/03784c89-6ecb-460d-9aa0-14b3e631ccc8/badge)](https://nodesecurity.io/orgs/itg-infoskarm/projects/03784c89-6ecb-460d-9aa0-14b3e631ccc8)
+
 This project is a working WIP. It does not have all planned features.
 
 # API
@@ -20,7 +22,7 @@ class FooAPIRequester extends BaseAPIRequester {
 	}
 
 	public performRequest(options) {
-		return request(options).promise()
+		return axios(options)
 	}
 }
 ```
@@ -40,13 +42,13 @@ const vasttrafikAPIRequester = new vasttrafik.APIRequester(10, 60000)
 
 __performRequest__
 
-Perform a request using [`request-promise-native`](https://www.npmjs.com/package/request-promise-native).
+Perform a request using [`axios`](https://yarnpkg.com/en/package/axios).
 ```javascript
 apiRequester.performRequest({
 	url: "https://httpbin.org/get",
 	method: "GET"
-}).then((data) => {
-	// Consume data
+}).then((response) => {
+	// Consume response
 }).catch((error) => {
 	// Handle errors
 })
@@ -105,4 +107,4 @@ vasttrafikAPI.getDepartures("9022014001960001", new Date(), 60, false).then((sto
 ## License
 MIT License
 
-Copyright &copy; 2017 Joel Eriksson <joel.eriksson@protonmail.com>
+Copyright &copy; 2017-2018 Joel Ericsson <joel.eriksson@protonmail.com>

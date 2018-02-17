@@ -93,18 +93,23 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_lib_schoolmeal_schoolmeal_.schoolmeal.api.html#_attributes" class="tsd-kind-icon">_attributes</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_lib_schoolmeal_schoolmeal_.schoolmeal.api.html#_client" class="tsd-kind-icon">_client</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_lib_schoolmeal_schoolmeal_.schoolmeal.api.html#_schoolmealref" class="tsd-kind-icon">_schoolmeal<wbr>Ref</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_lib_schoolmeal_schoolmeal_.schoolmeal.api.html#_lastmodified" class="tsd-kind-icon">_last<wbr>Modified</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_lib_schoolmeal_schoolmeal_.schoolmeal.api.html#_versiontoken" class="tsd-kind-icon">_version<wbr>Token</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_lib_schoolmeal_schoolmeal_.schoolmeal.api.html#apirequester" class="tsd-kind-icon">api<wbr>Requester</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_lib_schoolmeal_schoolmeal_.schoolmeal.api.html#baseurl" class="tsd-kind-icon">baseURL</a></li>
 							</ul>
 						</section>
+						<section class="tsd-index-section tsd-is-private-protected">
+							<h3>Accessors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-protected"><a href="_lib_schoolmeal_schoolmeal_.schoolmeal.api.html#lastmodified" class="tsd-kind-icon">last<wbr>Modified</a></li>
+							</ul>
+						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_lib_schoolmeal_schoolmeal_.schoolmeal.api.html#_getmenu" class="tsd-kind-icon">_get<wbr>Menu</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="_lib_schoolmeal_schoolmeal_.schoolmeal.api.html#_getmenu" class="tsd-kind-icon">_get<wbr>Menu</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_lib_schoolmeal_schoolmeal_.schoolmeal.api.html#getmenu" class="tsd-kind-icon">get<wbr>Menu</a></li>
 							</ul>
 						</section>
@@ -117,13 +122,13 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new API<span class="tsd-signature-symbol">(</span>apiRequester<span class="tsd-signature-symbol">: </span><a href="../interfaces/_lib_httpthrottler_httpthrottler_.httpthrottler.httpthrottled.html" class="tsd-signature-type">HTTPThrottled</a>, _schoolmealRef<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Reference</span>, _client<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, _versionToken<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_lib_schoolmeal_schoolmeal_.schoolmeal.api.html" class="tsd-signature-type">API</a></li>
+						<li class="tsd-signature tsd-kind-icon">new API<span class="tsd-signature-symbol">(</span>apiRequester<span class="tsd-signature-symbol">: </span><a href="../interfaces/_lib_httpthrottler_httpthrottler_.httpthrottler.httpthrottled.html" class="tsd-signature-type">HTTPThrottled</a>, _client<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, _versionToken<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_lib_schoolmeal_schoolmeal_.schoolmeal.api.html" class="tsd-signature-type">API</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/joel-eriksson/ITG-Infoskarm-API/blob/1cb61fb/src/lib/schoolmeal/schoolmeal.ts#L33">lib/schoolmeal/schoolmeal.ts:33</a></li>
+									<li>Defined in <a href="https://github.com/joel-eriksson/ITG-Infoskarm-API/blob/57c3dc0/src/lib/schoolmeal/schoolmeal.ts#L32">lib/schoolmeal/schoolmeal.ts:32</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -144,14 +149,6 @@
 									</div>
 								</li>
 								<li>
-									<h5>_schoolmealRef: <span class="tsd-signature-type">Reference</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>A Firebase database reference to a parent containing &quot;attributes&quot; in an array of objects.</p>
-										</div>
-									</div>
-								</li>
-								<li>
 									<h5>_client: <span class="tsd-signature-type">string</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
@@ -161,11 +158,6 @@
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> _versionToken: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The version token to use for requests to Skolmaten&#39;s API. The version token will set which version of the API to be used.</p>
-										</div>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="_lib_schoolmeal_schoolmeal_.schoolmeal.api.html" class="tsd-signature-type">API</a></h4>
@@ -176,22 +168,12 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="_attributes" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _attributes</h3>
-					<div class="tsd-signature tsd-kind-icon">_attributes<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/joel-eriksson/ITG-Infoskarm-API/blob/1cb61fb/src/lib/schoolmeal/schoolmeal.ts#L26">lib/schoolmeal/schoolmeal.ts:26</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="_client" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _client</h3>
 					<div class="tsd-signature tsd-kind-icon">_client<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/joel-eriksson/ITG-Infoskarm-API/blob/1cb61fb/src/lib/schoolmeal/schoolmeal.ts#L42">lib/schoolmeal/schoolmeal.ts:42</a></li>
+							<li>Defined in <a href="https://github.com/joel-eriksson/ITG-Infoskarm-API/blob/57c3dc0/src/lib/schoolmeal/schoolmeal.ts#L40">lib/schoolmeal/schoolmeal.ts:40</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -201,17 +183,17 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="_schoolmealref" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _schoolmeal<wbr>Ref</h3>
-					<div class="tsd-signature tsd-kind-icon">_schoolmeal<wbr>Ref<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Reference</span></div>
+					<a name="_lastmodified" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _last<wbr>Modified</h3>
+					<div class="tsd-signature tsd-kind-icon">_last<wbr>Modified<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/joel-eriksson/ITG-Infoskarm-API/blob/1cb61fb/src/lib/schoolmeal/schoolmeal.ts#L42">lib/schoolmeal/schoolmeal.ts:42</a></li>
+							<li>Defined in <a href="https://github.com/joel-eriksson/ITG-Infoskarm-API/blob/57c3dc0/src/lib/schoolmeal/schoolmeal.ts#L32">lib/schoolmeal/schoolmeal.ts:32</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>A Firebase database reference to a parent containing &quot;attributes&quot; in an array of objects.</p>
+							<p>The Last-Modified time of the latest API response</p>
 						</div>
 					</div>
 				</section>
@@ -221,14 +203,9 @@
 					<div class="tsd-signature tsd-kind-icon">_version<wbr>Token<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/joel-eriksson/ITG-Infoskarm-API/blob/1cb61fb/src/lib/schoolmeal/schoolmeal.ts#L42">lib/schoolmeal/schoolmeal.ts:42</a></li>
+							<li>Defined in <a href="https://github.com/joel-eriksson/ITG-Infoskarm-API/blob/57c3dc0/src/lib/schoolmeal/schoolmeal.ts#L40">lib/schoolmeal/schoolmeal.ts:40</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The version token to use for requests to Skolmaten&#39;s API. The version token will set which version of the API to be used.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="apirequester" class="tsd-anchor"></a>
@@ -236,7 +213,7 @@
 					<div class="tsd-signature tsd-kind-icon">api<wbr>Requester<span class="tsd-signature-symbol">:</span> <a href="../interfaces/_lib_httpthrottler_httpthrottler_.httpthrottler.httpthrottled.html" class="tsd-signature-type">HTTPThrottled</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/joel-eriksson/ITG-Infoskarm-API/blob/1cb61fb/src/lib/schoolmeal/schoolmeal.ts#L42">lib/schoolmeal/schoolmeal.ts:42</a></li>
+							<li>Defined in <a href="https://github.com/joel-eriksson/ITG-Infoskarm-API/blob/57c3dc0/src/lib/schoolmeal/schoolmeal.ts#L40">lib/schoolmeal/schoolmeal.ts:40</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -251,7 +228,7 @@
 					<div class="tsd-signature tsd-kind-icon">baseURL<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;https://skolmaten.se/api/3&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/joel-eriksson/ITG-Infoskarm-API/blob/1cb61fb/src/lib/schoolmeal/schoolmeal.ts#L33">lib/schoolmeal/schoolmeal.ts:33</a></li>
+							<li>Defined in <a href="https://github.com/joel-eriksson/ITG-Infoskarm-API/blob/57c3dc0/src/lib/schoolmeal/schoolmeal.ts#L26">lib/schoolmeal/schoolmeal.ts:26</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -265,19 +242,54 @@
 					</div>
 				</section>
 			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-private-protected">
+				<h2>Accessors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-protected">
+					<a name="lastmodified" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> last<wbr>Modified</h3>
+					<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> lastModified<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">set</span> lastModified<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/joel-eriksson/ITG-Infoskarm-API/blob/57c3dc0/src/lib/schoolmeal/schoolmeal.ts#L45">lib/schoolmeal/schoolmeal.ts:45</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/joel-eriksson/ITG-Infoskarm-API/blob/57c3dc0/src/lib/schoolmeal/schoolmeal.ts#L49">lib/schoolmeal/schoolmeal.ts:49</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>value: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
 					<a name="_getmenu" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _get<wbr>Menu</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _get<wbr>Menu</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
 						<li class="tsd-signature tsd-kind-icon">_get<wbr>Menu<span class="tsd-signature-symbol">(</span>school<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, force<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, week<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, year<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, lastModified<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, resolve<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Function</span>, reject<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/joel-eriksson/ITG-Infoskarm-API/blob/1cb61fb/src/lib/schoolmeal/schoolmeal.ts#L60">lib/schoolmeal/schoolmeal.ts:60</a></li>
+									<li>Defined in <a href="https://github.com/joel-eriksson/ITG-Infoskarm-API/blob/57c3dc0/src/lib/schoolmeal/schoolmeal.ts#L55">lib/schoolmeal/schoolmeal.ts:55</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -318,7 +330,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/joel-eriksson/ITG-Infoskarm-API/blob/1cb61fb/src/lib/schoolmeal/schoolmeal.ts#L168">lib/schoolmeal/schoolmeal.ts:168</a></li>
+									<li>Defined in <a href="https://github.com/joel-eriksson/ITG-Infoskarm-API/blob/57c3dc0/src/lib/schoolmeal/schoolmeal.ts#L140">lib/schoolmeal/schoolmeal.ts:140</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -365,8 +377,8 @@
 					<li class="globals  ">
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
-					<li class="label tsd-is-external">
-						<span>Internals</span>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_config_.html">"config"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_lib_apirequester_apirequester_.html">"lib/apirequester/apirequester"</a>
@@ -403,12 +415,6 @@
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_main_.html">"main"</a>
 					</li>
-					<li class="label tsd-is-external">
-						<span>Externals</span>
-					</li>
-					<li class=" tsd-kind-external-module tsd-is-external">
-						<a href="../modules/_config_.html">"config"</a>
-					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
@@ -422,13 +428,10 @@
 								<a href="_lib_schoolmeal_schoolmeal_.schoolmeal.api.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="_lib_schoolmeal_schoolmeal_.schoolmeal.api.html#_attributes" class="tsd-kind-icon">_attributes</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="_lib_schoolmeal_schoolmeal_.schoolmeal.api.html#_client" class="tsd-kind-icon">_client</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="_lib_schoolmeal_schoolmeal_.schoolmeal.api.html#_schoolmealref" class="tsd-kind-icon">_schoolmeal<wbr>Ref</a>
+								<a href="_lib_schoolmeal_schoolmeal_.schoolmeal.api.html#_lastmodified" class="tsd-kind-icon">_last<wbr>Modified</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="_lib_schoolmeal_schoolmeal_.schoolmeal.api.html#_versiontoken" class="tsd-kind-icon">_version<wbr>Token</a>
@@ -439,7 +442,10 @@
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="_lib_schoolmeal_schoolmeal_.schoolmeal.api.html#baseurl" class="tsd-kind-icon">baseURL</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-protected">
+								<a href="_lib_schoolmeal_schoolmeal_.schoolmeal.api.html#lastmodified" class="tsd-kind-icon">last<wbr>Modified</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
 								<a href="_lib_schoolmeal_schoolmeal_.schoolmeal.api.html#_getmenu" class="tsd-kind-icon">_get<wbr>Menu</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
@@ -454,7 +460,7 @@
 		</div>
 	</div>
 </div>
-<footer>
+<footer class="with-border-bottom">
 	<div class="container">
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
@@ -513,6 +519,9 @@
 		</div>
 	</div>
 </footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="http://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
 <div class="overlay"></div>
 <script src="../assets/js/main.js"></script>
 <script>if (location.protocol == 'file:') document.write('<script src="../assets/js/search.js"><' + '/script>');</script>

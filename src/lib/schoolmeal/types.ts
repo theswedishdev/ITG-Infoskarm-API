@@ -1,7 +1,6 @@
-import * as admin from "firebase-admin"
 import * as moment from "moment-timezone"
 
-namespace schoolmeal {
+declare namespace schoolmeal {
 	export namespace RawAPI {
 		export interface School {
 			id: number
@@ -30,7 +29,6 @@ namespace schoolmeal {
 			school: School
 			id: number
 			bulletins: Bulletin[]
-			lastModified: string
 		}
 
 		export interface Week {
@@ -64,7 +62,7 @@ namespace schoolmeal {
 				[dddd: string]: Menu
 			}
 			bulletins?: Bulletin[]
-			lastmodified: number
+			lastModified: number
 		}
 
 		export interface Menu {
@@ -81,12 +79,6 @@ namespace schoolmeal {
 
 		export interface Attribute {
 			id: number
-			data: {
-				images: {
-					color: string
-					nocolor: string
-				}
-			}
 		}
 
 		export interface Bulletin {
