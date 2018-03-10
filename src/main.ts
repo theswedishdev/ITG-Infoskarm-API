@@ -74,7 +74,7 @@ const vasttrafikAuth: Auth = new Auth(config.vasttrafik.accessTokenUrl, config.v
  * An instance of [[apirequester.APIRequester]] for use with [[vasttrafik.API]]
  * @constant {apirequester.APIRequester}
  */
-const vasttrafikAPIRequester: apirequester.APIRequester = new apirequester.APIRequester(40, 60000)
+const vasttrafikAPIRequester: apirequester.APIRequester = new apirequester.APIRequester(200, 60000)
 
 /**
  * An instance of [[vasttrafik.API]] to handle requests to Västtrafik's APIs
@@ -191,16 +191,6 @@ const getSchoolmeals = (force: boolean = false) => {
 		})
 	}).catch((error) => {
 		console.error(error)
-
-		/* if (error instanceof errors.StatusCodeError) {
-			if (error.statusCode === 304) {
-				console.error(`${cTimestamp()} ${cLibName("schoolmeal")} Menu is already up to date from Skolmaten's API.`)
-			} else {
-				console.error(`${cTimestamp()} ${cLibName("schoolmeal")} ${cError("StatusCodeError")} when trying to fetch menu from Skolmaten's API. HTTP Status code: ${cError(error.statusCode.toString())}`)
-			}
-		} else {
-			console.error(`${cTimestamp()} ${cLibName("schoolmeal")} ${cError(error)}`)
-		} */
 	})
 }
 
@@ -208,51 +198,54 @@ const getSchoolmeals = (force: boolean = false) => {
  * An instance of [[apirequester.APIRequester]] for use with [[gbgcamera.API]]
  * @constant {apirequester.APIRequester}
  */
-const gbgcameraAPIRequester: apirequester.APIRequester = new apirequester.APIRequester(2, 60000)
+const gbgcameraAPIRequester: apirequester.APIRequester = new apirequester.APIRequester(config.gbgcamera.cameras.length * 2, 60000)
 
 /**
- * An instance of [[schoolmeal.API]] to handle requests to Skolmaten's APIs
- * @constant {schoolmeal.API}
+ * An instance of [[gbgcamera.API]] to handle requests to Göteborg Stad's APIs
+ * @constant {gbgcamera.API}
  */
 const gbgcameraClient: gbgcamera.API = new gbgcamera.API(gbgcameraAPIRequester, config.gbgcamera.apikey)
 
 const getCameraImages = () => {
-	const cameraId: number = 17
-	const cameraImageFile: string = path.resolve("images", `${cameraId}.jpg`)
-
-	if (!fs.existsSync(path.resolve("images"))) {
-		fs.mkdirSync(path.resolve("images"))
-	}
-
-	const writeStream: NodeJS.WritableStream = fs.createWriteStream(cameraImageFile)
-
-	gbgcameraClient.getCameraImage(cameraId).then((response) => {
-		response.data.pipe(writeStream)
-	})
-
-	writeStream.on("finish", () => {
-		bucket.upload(cameraImageFile, {
-			destination: `gbgcamera/${cameraId}/${moment.tz().tz("Europe/Stockholm").format("YYYY-MM-DD_HH-mm")}.jpg`,
-			gzip: true,
-		}).then((data) => {
-			const file = data[0];
-			return file.getSignedUrl({
-				action: "read",
-				expires: moment.tz().tz("Europe/Stockholm").add(7, "d").toISOString()
-			})
-		}).then((data) => {
-			const url = data[0];
-
-			return rootRef.child("gbgcamera").child(cameraId.toString()).set({
-				image: url,
-				lastmodified: admin.database.ServerValue.TIMESTAMP
-			})
-		}).then(() => {
-			console.log(`${cTimestamp()} ${cLibName("gbgcamera")} Wrote camera ${cProperty(cameraId.toString())} to Firebase.`)
+	config.gbgcamera.cameras.forEach((cameraId) => {
+		const cameraImageFile: string = path.resolve("images", `${cameraId}.jpg`)
+	
+		if (!fs.existsSync(path.resolve("images"))) {
+			fs.mkdirSync(path.resolve("images"))
+		}
+	
+		const writeStream: NodeJS.WritableStream = fs.createWriteStream(cameraImageFile)
+	
+		gbgcameraClient.getCameraImage(cameraId).then((response) => {
+			response.data.pipe(writeStream)
 		}).catch((error) => {
 			console.error(`${cTimestamp()} ${cLibName("gbgcamera")} ${cError(error)}`)
-				
-			return
+		})
+	
+		writeStream.on("finish", () => {
+			bucket.upload(cameraImageFile, {
+				destination: `gbgcamera/${cameraId}/${moment.tz().tz("Europe/Stockholm").format("YYYY-MM-DD_HH-mm")}.jpg`,
+				gzip: true,
+			}).then((data) => {
+				const file = data[0];
+				return file.getSignedUrl({
+					action: "read",
+					expires: moment.tz().tz("Europe/Stockholm").add(7, "d").toISOString()
+				})
+			}).then((data) => {
+				const url = data[0];
+	
+				return rootRef.child("gbgcamera").child(cameraId.toString()).set({
+					image: url,
+					lastmodified: admin.database.ServerValue.TIMESTAMP
+				})
+			}).then(() => {
+				console.log(`${cTimestamp()} ${cLibName("gbgcamera")} Wrote camera ${cProperty(cameraId.toString())} to Firebase.`)
+			}).catch((error) => {
+				console.error(`${cTimestamp()} ${cLibName("gbgcamera")} ${cError(error)}`)
+					
+				return
+			})
 		})
 	})
 }

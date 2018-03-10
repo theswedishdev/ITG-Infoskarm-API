@@ -13,6 +13,9 @@
 		"versionToken": ""
 	},
 	"gbgcamera": {
-		"apikey": ""
+		"apikey": "",
+		"cameras": [
+			17
+		]
 	}
 }

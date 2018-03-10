@@ -22,6 +22,7 @@ declare namespace Config {
 
 	export type GBGCameraConfig = {
 		apikey: string
+		cameras: number[]
 	}
 	
 	export type Config = {

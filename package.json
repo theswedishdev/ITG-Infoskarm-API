@@ -1,6 +1,6 @@
 {
   "name": "itg-infoskarm-api",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "main": "dist/main.js",
   "repository": "https://github.com/joel-eriksson/ITG-Infoskarm-API.git",
   "author": "Joel Ericsson <joel.eriksson@protonmail.com>",
@@ -14,7 +14,7 @@
   "dependencies": {
     "axios": "^0.17.1",
     "chalk": "^2.3.1",
-    "firebase-admin": "^5.9.0",
+    "firebase-admin": "^5.10.0",
     "moment": "^2.19.3",
     "moment-timezone": "^0.5.13",
     "typescript": "^2.7.1",
