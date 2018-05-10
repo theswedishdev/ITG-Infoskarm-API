@@ -15,8 +15,6 @@ import gbgcamera from "./lib/gbgcamera/gbgcamera"
 
 const cProperty = chalk.cyan
 
-const cWarn = chalk.yellow
-
 const cError = (error: string | Error): string => {
 	if (error instanceof Error) {
 		return chalk.red(error.message)
@@ -62,7 +60,7 @@ const rootRef: admin.database.Reference = db.ref()
 /**
  * Firebase storage SDK
  */
-const bucket = admin.storage().bucket();
+const bucket = admin.storage().bucket()
 
 /**
  * An instance of [[Auth]] to get an access token for Västtrafik's APIs
@@ -84,6 +82,7 @@ const vasttrafikAPI: vasttrafik.API = new vasttrafik.API(vasttrafikAPIRequester,
 
 type StopToFetch = {
 	id: string
+	key: string
 	name: string
 	active: boolean
 	timeSpan: number
@@ -94,16 +93,18 @@ type StopToFetch = {
  */
 let stopsToFetch: StopToFetch[] = []
 
-rootRef.child("vasttrafik").child("stops").on("value", (snap) => {
-	const stops = snap.val()
-	stopsToFetch = []
+rootRef.child("vasttrafik").child("stops").on("value", (stopsSnap: admin.database.DataSnapshot) => {
+	const newStopsToFetch: StopToFetch[] = []
 
-	Object.keys(stops).forEach((stopSlug: string) => {
-		const stop: StopToFetch = stops[stopSlug]
-		if (stop.active) {
-			stopsToFetch.push(stop)
-		}
+	// @ts-ignore
+	stopsSnap.forEach((stopSnap) => {
+		newStopsToFetch.push({
+			...stopSnap.val(),
+			key: stopSnap.key,
+		})
 	})
+
+	stopsToFetch = newStopsToFetch
 })
 
 const getDepartures = () => {
@@ -111,7 +112,7 @@ const getDepartures = () => {
 	 * An array of promises to fetch Västtrafik stops
 	 * @constant {Promise[]}
 	 */
-	const stopFetches = [];
+	const stopFetches = []
 	stopsToFetch.forEach((stop) => {
 		stopFetches.push(vasttrafikAPI.getDepartures(stop.id, moment(), stop.timeSpan))
 	})
@@ -119,7 +120,7 @@ const getDepartures = () => {
 	Promise.all(stopFetches).then((results) => {
 		const vasttrafikRef: admin.database.Reference = rootRef.child("vasttrafik")
 
-		results.forEach((result, i) => {
+		results.forEach((result, i) => {			
 			if (result && result.stop.name) {
 				const parsedDeparturesKey: string = urlSlug(result.stop.name)
 
@@ -134,9 +135,16 @@ const getDepartures = () => {
 				})
 			} else if (result.stop.id) {
 				vasttrafikRef.child("stopsLookup").child(result.stop.id).once("value", (stopLookupSnap) => {
-					const stopKey = stopLookupSnap.val()
+					let stopKey = stopLookupSnap.val()
+
 					if (!stopKey) {
-						return
+						({ key: stopKey } = stopsToFetch.find((stopToFetch) => {
+							return result.stop.id === stopToFetch.id
+						}))
+
+						if (!stopKey) {
+							return
+						}
 					}
 
 					vasttrafikRef.child("departures").child(stopKey).child("stop").once("value", (stopSnap) => {
@@ -227,13 +235,13 @@ const getCameraImages = () => {
 				destination: `gbgcamera/${cameraId}/${moment.tz().tz("Europe/Stockholm").format("YYYY-MM-DD_HH-mm")}.jpg`,
 				gzip: true,
 			}).then((data) => {
-				const file = data[0];
+				const file = data[0]
 				return file.getSignedUrl({
 					action: "read",
 					expires: moment.tz().tz("Europe/Stockholm").add(7, "d").toISOString()
 				})
 			}).then((data) => {
-				const url = data[0];
+				const url = data[0]
 	
 				return rootRef.child("gbgcamera").child(cameraId.toString()).set({
 					image: url,

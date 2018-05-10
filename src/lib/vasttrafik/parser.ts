@@ -37,8 +37,8 @@ namespace vasttrafik {
 			if (!departures || departures.length < 1) {
 				return {
 					stop: {
-						id: stopid
-					}
+						id: stopid,
+					},
 				}
 			}
 
