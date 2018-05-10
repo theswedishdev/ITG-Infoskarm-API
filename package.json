@@ -57,7 +57,7 @@
     "sntp": "2.1.0",
     "assert-plus": "1.0.0",
     "extsprintf": "1.4.0",
-    "protobufjs": "6.8.4",
+    "protobufjs": "6.8.6",
     "minimist": "1.2.0",
     "glob": "7.1.2",
     "minimatch": "3.0.4",
