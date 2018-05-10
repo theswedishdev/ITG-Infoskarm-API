@@ -39,7 +39,7 @@ export default class Auth {
 	 * @returns {Auth}
 	 */
 	constructor(public accessTokenUrl: string, private _consumerKey: string, private _consumerSecret: string) {
-		this._base64AuthString = new Buffer(`${this._consumerKey}:${this._consumerSecret}`).toString("base64")
+		this._base64AuthString = Buffer.from(`${this._consumerKey}:${this._consumerSecret}`).toString("base64")
 		this._accessTokenExpiresAt = new Date(0)
 	}
 
