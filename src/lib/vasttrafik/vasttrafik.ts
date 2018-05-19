@@ -52,7 +52,6 @@ namespace vasttrafik {
 		 * @since 0.0.1
 		 * @param {HTTPThrottler.HTTPThrottled} apiRequester - An instance of a class implementing the [[HTTPThrottler.HTTPThrottled]] interface
 		 * @param {Auth} _auth - An instance of [[Auth]]
-		 * @returns {vasttrafik.API}
 		 */
 		constructor(public apiRequester: HTTPThrottler.HTTPThrottled, private _auth: Auth) {
 			

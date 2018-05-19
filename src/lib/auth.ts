@@ -36,7 +36,6 @@ export default class Auth {
 	 * @param {string} accessTokenUrl - URL to POST to get an access token
 	 * @param {string} _consumerKey - Consumer key to use to get access token
 	 * @param {string} _consumerSecret - Consumer secret to use to get access token
-	 * @returns {Auth}
 	 */
 	constructor(public accessTokenUrl: string, private _consumerKey: string, private _consumerSecret: string) {
 		this._base64AuthString = Buffer.from(`${this._consumerKey}:${this._consumerSecret}`).toString("base64")

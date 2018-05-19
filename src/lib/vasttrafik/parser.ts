@@ -47,11 +47,18 @@ namespace vasttrafik {
 			const serverMoment: moment.Moment = moment(`${response.serverdate} ${response.servertime}`, "YYYY-MM-DD HH:mm")
 
 			try {
-				departures.forEach((departure, i) => {
-					let shortDirection = departure.direction.indexOf(" via") > 0 ? departure.direction.substr(0, departure.direction.indexOf(" via")) : departure.direction
-					shortDirection = shortDirection.indexOf(",") > 0 ? shortDirection.substr(0, shortDirection.indexOf(",")) : shortDirection
+				departures.forEach((departure) => {
+					let shortDirection = departure.direction
+					
+					if (shortDirection.includes(" via ")) {
+						shortDirection = shortDirection.substr(0, shortDirection.indexOf(" via "))
+					}
+
+					if (shortDirection.includes(",")) {
+						shortDirection = shortDirection.substr(0, shortDirection.indexOf(","))
+					}
 	
-					const shortDirectionSlug: string = urlSlug(departure.direction)
+					const shortDirectionSlug: string = urlSlug(shortDirection)
 	
 					let realtime = true
 					let date: string
