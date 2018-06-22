@@ -1,10 +1,12 @@
-import * as fs from "fs"
 import * as path from "path"
 
 import chalk from "chalk"
+import * as axios from "axios"
 import * as admin from "firebase-admin"
 import * as urlSlug from "url-slug"
 import * as moment from "moment-timezone"
+import * as aws4 from "aws4"
+import { compress as brotliCompress } from 'iltorb'
 
 import Config from "./config"
 import Auth from "./lib/auth"
@@ -42,7 +44,6 @@ const config: Config.Config = require(path.resolve("config", "config.json"))
 admin.initializeApp({
 	credential: admin.credential.cert(path.resolve("config", "firebaseServiceAccount.json")),
 	databaseURL: config.firebase.databaseURL,
-	storageBucket: config.firebase.storageBucket,
 })
 
 /**
@@ -56,11 +57,6 @@ const db: admin.database.Database = admin.database()
  * @constant {admin.database.Reference}
  */
 const rootRef: admin.database.Reference = db.ref()
-
-/**
- * Firebase storage SDK
- */
-const bucket = admin.storage().bucket()
 
 /**
  * An instance of [[Auth]] to get an access token for Västtrafik's APIs
@@ -215,53 +211,86 @@ const gbgcameraAPIRequester: apirequester.APIRequester = new apirequester.APIReq
 const gbgcameraClient: gbgcamera.API = new gbgcamera.API(gbgcameraAPIRequester, config.gbgcamera.apikey)
 
 const getCameraImages = () => {
-	config.gbgcamera.cameras.forEach((cameraId) => {
-		const cameraImageFile: string = path.resolve("images", `${cameraId}.jpg`)
-	
-		if (!fs.existsSync(path.resolve("images"))) {
-			fs.mkdirSync(path.resolve("images"))
-		}
-	
-		const writeStream: NodeJS.WritableStream = fs.createWriteStream(cameraImageFile)
-	
-		gbgcameraClient.getCameraImage(cameraId).then((response) => {
-			response.data.pipe(writeStream)
+	config.gbgcamera.cameras.forEach((cameraId) => {	
+		gbgcameraClient.getCameraImage(cameraId).then((cameraResponse) => {
+			const currentMoment = moment.tz().tz("Europe/Stockholm")
+			const canonicalUri = `/gbgcamera/${cameraId}/${currentMoment.format("YYYY-MM-DD_HH-mm")}.jpg`
+			
+			const imageChunks = []
+			cameraResponse.data.on("data", (data) => {
+				imageChunks.push(data);
+			})
+
+			cameraResponse.data.on("end", () => {
+				const imageFile = Buffer.concat(imageChunks)
+				let compressedImageFile
+				
+				brotliCompress(imageFile).then((output) => {
+					compressedImageFile = output;
+				}).catch((error) => {
+					console.error(`${cTimestamp()} ${cLibName("gbgcamera")} ${cError(error)}`)
+				})
+
+				const {
+					headers: awsHeaders
+				} = aws4.sign({
+					host: `${config.s3.bucket}.${config.s3.host}`,
+					method: "PUT",
+					path: canonicalUri,
+					body: compressedImageFile ? compressedImageFile : imageFile,
+					service: "s3",
+					region: config.s3.region,
+					headers: {
+						"Content-Type": "image/jpeg",
+					},
+				}, {
+					accessKeyId: config.s3.accessKeyId,
+					secretAccessKey: config.s3.secretAccessKey,
+				})
+
+				delete awsHeaders["Host"]
+
+				axios.default.request({
+					url: canonicalUri,
+					method: "PUT",
+					baseURL: `https://${config.s3.bucket}.${config.s3.host}`,
+					headers: {
+						...awsHeaders,
+						"Cache-Control": moment.duration(1, "years").asSeconds(),
+						"Content-Disposition": "inline",
+						"x-amz-acl": "public-read",
+						"x-amz-storage-class": "STANDARD",
+					},
+					data: compressedImageFile ? compressedImageFile : imageFile,
+					transformRequest: [
+						(data, headers) => {
+							if (compressedImageFile) {
+								headers["Content-Encoding"] = "br"
+							}
+						
+							return data
+						},
+					],
+				}).then((uploadResponse) => {
+					console.log(`${cTimestamp()} ${cLibName("gbgcamera")} Uploaded camera ${cProperty(cameraId.toString())} to DigitalOcean spaces.`)
+
+					return rootRef.child("gbgcamera").child(cameraId.toString()).set({
+						image: uploadResponse.config.url,
+						lastmodified: admin.database.ServerValue.TIMESTAMP
+					})
+				}).then(() => {
+					console.log(`${cTimestamp()} ${cLibName("gbgcamera")} Wrote camera ${cProperty(cameraId.toString())} to Firebase.`)
+				}).catch((error: axios.AxiosError) => {
+					console.error(`${cTimestamp()} ${cLibName("gbgcamera")} ${cError(error)}`)
+				})
+			})
 		}).catch((error) => {
 			console.error(`${cTimestamp()} ${cLibName("gbgcamera")} ${cError(error)}`)
-		})
-	
-		writeStream.on("finish", () => {
-			bucket.upload(cameraImageFile, {
-				destination: `gbgcamera/${cameraId}/${moment.tz().tz("Europe/Stockholm").format("YYYY-MM-DD_HH-mm")}.jpg`,
-				gzip: true,
-			}).then((data) => {
-				const file = data[0]
-				return file.getSignedUrl({
-					action: "read",
-					expires: moment.tz().tz("Europe/Stockholm").add(7, "d").toISOString()
-				})
-			}).then((data) => {
-				const url = data[0]
-	
-				return rootRef.child("gbgcamera").child(cameraId.toString()).set({
-					image: url,
-					lastmodified: admin.database.ServerValue.TIMESTAMP
-				})
-			}).then(() => {
-				console.log(`${cTimestamp()} ${cLibName("gbgcamera")} Wrote camera ${cProperty(cameraId.toString())} to Firebase.`)
-			}).catch((error) => {
-				console.error(`${cTimestamp()} ${cLibName("gbgcamera")} ${cError(error)}`)
-					
-				return
-			})
 		})
 	})
 }
 
-/**
- * @constant {NodeJS.Timer}
- */
-const mainInterval: NodeJS.Timer = setInterval(() => {
+setInterval(() => {
 	let seconds: number = parseInt(moment().format("s"))
 	let minutes: number = parseInt(moment().format("m"))
 
