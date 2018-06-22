@@ -213,9 +213,8 @@ const gbgcameraClient: gbgcamera.API = new gbgcamera.API(gbgcameraAPIRequester, 
 const getCameraImages = () => {
 	config.gbgcamera.cameras.forEach((cameraId) => {	
 		gbgcameraClient.getCameraImage(cameraId).then((cameraResponse) => {
-			const currentMoment = moment.tz().tz("Europe/Stockholm")
-			const canonicalUri = `/gbgcamera/${cameraId}/${currentMoment.format("YYYY-MM-DD_HH-mm")}.jpg`
-			
+			const date = moment.tz().tz("Europe/Stockholm")
+
 			const imageChunks = []
 			cameraResponse.data.on("data", (data) => {
 				imageChunks.push(data);
@@ -223,70 +222,67 @@ const getCameraImages = () => {
 
 			cameraResponse.data.on("end", () => {
 				const imageFile = Buffer.concat(imageChunks)
-				let compressedImageFile
 				
-				brotliCompress(imageFile).then((output) => {
-					compressedImageFile = output;
+				brotliCompress(imageFile).then((compressedImageFile: Buffer) => {
+					uploadCameraImage(date, cameraId.toString(), compressedImageFile, true)
 				}).catch((error) => {
+					uploadCameraImage(date, cameraId.toString(), imageFile, false)
+
 					console.error(`${cTimestamp()} ${cLibName("gbgcamera")} ${cError(error)}`)
-				})
-
-				const {
-					headers: awsHeaders
-				} = aws4.sign({
-					host: `${config.s3.bucket}.${config.s3.host}`,
-					method: "PUT",
-					path: canonicalUri,
-					body: compressedImageFile ? compressedImageFile : imageFile,
-					service: "s3",
-					region: config.s3.region,
-					headers: {
-						"Content-Type": "image/jpeg",
-					},
-				}, {
-					accessKeyId: config.s3.accessKeyId,
-					secretAccessKey: config.s3.secretAccessKey,
-				})
-
-				delete awsHeaders["Host"]
-
-				axios.default.request({
-					url: canonicalUri,
-					method: "PUT",
-					baseURL: `https://${config.s3.bucket}.${config.s3.host}`,
-					headers: {
-						...awsHeaders,
-						"Cache-Control": moment.duration(1, "years").asSeconds(),
-						"Content-Disposition": "inline",
-						"x-amz-acl": "public-read",
-						"x-amz-storage-class": "STANDARD",
-					},
-					data: compressedImageFile ? compressedImageFile : imageFile,
-					transformRequest: [
-						(data, headers) => {
-							if (compressedImageFile) {
-								headers["Content-Encoding"] = "br"
-							}
-						
-							return data
-						},
-					],
-				}).then((uploadResponse) => {
-					console.log(`${cTimestamp()} ${cLibName("gbgcamera")} Uploaded camera ${cProperty(cameraId.toString())} to DigitalOcean spaces.`)
-
-					return rootRef.child("gbgcamera").child(cameraId.toString()).set({
-						image: uploadResponse.config.url,
-						lastmodified: admin.database.ServerValue.TIMESTAMP
-					})
-				}).then(() => {
-					console.log(`${cTimestamp()} ${cLibName("gbgcamera")} Wrote camera ${cProperty(cameraId.toString())} to Firebase.`)
-				}).catch((error: axios.AxiosError) => {
-					console.error(`${cTimestamp()} ${cLibName("gbgcamera")} ${cError(error)}`)
-				})
+				})				
 			})
 		}).catch((error) => {
 			console.error(`${cTimestamp()} ${cLibName("gbgcamera")} ${cError(error)}`)
 		})
+	})
+}
+
+const uploadCameraImage = (date: moment.Moment, cameraId: string, cameraImage: Buffer, compressed: boolean) => {
+	const canonicalUri = `/gbgcamera/${cameraId}/${date.format("YYYY-MM-DD_HH-mm")}.jpg`
+
+	const {
+		headers: awsHeaders
+	} = aws4.sign({
+		host: `${config.s3.bucket}.${config.s3.host}`,
+		method: "PUT",
+		path: canonicalUri,
+		body: cameraImage,
+		service: "s3",
+		region: config.s3.region,
+		headers: {
+			"Content-Type": "image/jpeg",
+		},
+	}, {
+		accessKeyId: config.s3.accessKeyId,
+		secretAccessKey: config.s3.secretAccessKey,
+	})
+
+	delete awsHeaders["Host"]
+
+	axios.default.request({
+		url: canonicalUri,
+		method: "PUT",
+		baseURL: `https://${config.s3.bucket}.${config.s3.host}`,
+		headers: {
+			...awsHeaders,
+			"Cache-Control": moment.duration(1, "years").asSeconds(),
+			"Content-Encoding": compressed ? "br" : null,
+			"Content-Disposition": "inline",
+			"x-amz-acl": "public-read",
+			"x-amz-storage-class": "STANDARD",
+		},
+		data: cameraImage,
+	}).then((uploadResponse) => {
+		console.log(`${cTimestamp()} ${cLibName("gbgcamera")} Uploaded camera ${cProperty(cameraId)} to S3.`)
+
+		return rootRef.child("gbgcamera").child(cameraId).set({
+			image: uploadResponse.config.url,
+			lastmodified: admin.database.ServerValue.TIMESTAMP
+		})
+	}).then(() => {
+		console.log(`${cTimestamp()} ${cLibName("gbgcamera")} Wrote camera ${cProperty(cameraId)} to Firebase.`)
+	}).catch((error: axios.AxiosError) => {
+		console.error(`${cTimestamp()} ${cLibName("gbgcamera")} ${cError(error)}`)
 	})
 }
 
