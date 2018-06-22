@@ -6,7 +6,7 @@ import * as admin from "firebase-admin"
 import * as urlSlug from "url-slug"
 import * as moment from "moment-timezone"
 import * as aws4 from "aws4"
-import { compress as brotliCompress } from 'iltorb'
+import { compress as brotliCompress } from "iltorb"
 
 import Config from "./config"
 import Auth from "./lib/auth"
