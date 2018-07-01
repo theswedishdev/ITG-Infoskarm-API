@@ -50,6 +50,7 @@ declare namespace vasttrafik {
 		fgColor: string
 		bgColor: string
 		stroke: string
+		cancelled?: boolean
 		JourneyDetailRef?: {
 			ref: string
 		}
@@ -100,6 +101,7 @@ declare namespace vasttrafik {
 			time: string
 			date: string
 			datetime: Date
+			cancelled: boolean
 		}
 		track: string
 		colors: {

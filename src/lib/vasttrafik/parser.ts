@@ -106,6 +106,7 @@ namespace vasttrafik {
 							date: date,
 							time: time,
 							datetime: departureMoment.toDate(),
+							cancelled: departure.cancelled ? true : false,
 						},
 						track: departure.rtTrack ? departure.rtTrack : departure.track,
 						colors: {
