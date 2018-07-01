@@ -1,7 +1,13 @@
 {
 	"firebase": {
-		"databaseURL": "",
-		"storageBucket": ""
+		"databaseURL": ""
+	},
+	"s3": {
+		"host": "",
+		"bucket": "",
+		"region": "",
+		"accessKeyId": "",
+		"secretAccessKey": ""
 	},
 	"vasttrafik": {
 		"accessTokenUrl": "https://api.vasttrafik.se/token",

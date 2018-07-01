@@ -7,8 +7,8 @@ namespace gbgcamera {
 		public trafficCamerasURL: string = `${this.baseURL}/TrafficCameras`
 
 		constructor(public apiRequester: HTTPThrottler.HTTPThrottled, private _apikey: string) {
-			this.cameraImageURL += `/${_apikey}`
-			this.trafficCamerasURL += `/${_apikey}`
+			this.cameraImageURL += `/${this._apikey}`
+			this.trafficCamerasURL += `/${this._apikey}`
 		}
 
 		public getCameraImage(camera: string | number) {

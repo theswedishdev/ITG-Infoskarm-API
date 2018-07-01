@@ -6,7 +6,14 @@
 declare namespace Config {
 	export type FirebaseConfig = {
 		databaseURL: string
-		storageBucket: string
+	}
+
+	export type S3Config = {
+		host: string
+		bucket: string
+		region: string
+		accessKeyId: string
+		secretAccessKey: string
 	}
 
 	export type SchoolmealConfig = {
@@ -26,6 +33,7 @@ declare namespace Config {
 	}
 	
 	export type Config = {
+		s3: S3Config
 		firebase: FirebaseConfig
 		schoolmeal: SchoolmealConfig
 		vasttrafik: VasttrafikConfig
