@@ -2,7 +2,7 @@ import { HTTPThrottler } from "../httpthrottler/httpthrottler"
 
 namespace gbgcamera {
 	export class API {
-		public baseURL: string = "http://data.goteborg.se/TrafficCamera/v0.2"
+		public baseURL: string = "http://data.goteborg.se/TrafficCamera/v1.0"
 		public cameraImageURL: string = `${this.baseURL}/CameraImage`
 		public trafficCamerasURL: string = `${this.baseURL}/TrafficCameras`
 
