@@ -3,7 +3,6 @@
  * @since 0.1.0
  * @module schoolmeal
  * @author Joel Ericsson <joel.eriksson@protonmail.com>
- * @copyright 2017-2018 Joel Ericsson <joel.eriksson@protonmail.com>
  * @license MIT
  */
 

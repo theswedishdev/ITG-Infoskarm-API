@@ -3,7 +3,6 @@
  * @file An oAuth2.0 client
  * @module auth
  * @author Joel Ericsson <joel.eriksson@protonmail.com>
- * @copyright 2017-2018 Joel Ericsson <joel.eriksson@protonmail.com>
  * @license MIT
  */
 

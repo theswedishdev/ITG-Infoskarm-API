@@ -3,7 +3,6 @@
  * @file Main file for the HTTP Throttler
  * @module httpthrottler
  * @author Joel Ericsson <joel.eriksson@protonmail.com>
- * @copyright 2017-2018 Joel Ericsson <joel.eriksson@protonmail.com>
  * @license MIT
  */
 

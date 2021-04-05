@@ -2,7 +2,6 @@
  * Main file for the APIRequester
  * @module apirequester
  * @author Joel Ericsson <joel.eriksson@protonmail.com>
- * @copyright 2017-2018 Joel Ericsson <joel.eriksson@protonmail.com>
  * @license MIT
  */
 

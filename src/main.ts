@@ -1,12 +1,13 @@
 import * as path from "path"
+import * as util from "util"
+import * as zlib from "zlib"
 
-import chalk from "chalk"
+import * as chalk from "chalk"
 import * as axios from "axios"
 import * as admin from "firebase-admin"
 import * as urlSlug from "url-slug"
 import * as moment from "moment-timezone"
 import * as aws4 from "aws4"
-import { compress as brotliCompress } from "iltorb"
 
 import Config from "./config"
 import Auth from "./lib/auth"
@@ -14,6 +15,8 @@ import apirequester from "./lib/apirequester/apirequester"
 import vasttrafik from "./lib/vasttrafik/vasttrafik"
 import schoolmeal from "./lib/schoolmeal/schoolmeal"
 import gbgcamera from "./lib/gbgcamera/gbgcamera"
+
+const brotliCompress = util.promisify(zlib.brotliCompress)
 
 const cProperty = chalk.cyan
 
@@ -118,7 +121,7 @@ const getDepartures = () => {
 
 		results.forEach((result, i) => {			
 			if (result && result.stop.name) {
-				const parsedDeparturesKey: string = urlSlug(result.stop.name)
+				const parsedDeparturesKey: string = urlSlug.convert(result.stop.name)
 
 				vasttrafikRef.child("stopsLookup").child(result.stop.id).set(parsedDeparturesKey).catch((error) => {
 					console.error(`${cTimestamp()} ${cLibName("vasttrafik")} Could not add ${cProperty(result.stop.id)}: ${cProperty(parsedDeparturesKey)} to Firebase.`)
@@ -220,16 +223,17 @@ const getCameraImages = () => {
 				imageChunks.push(data);
 			})
 
-			cameraResponse.data.on("end", () => {
-				const imageFile = Buffer.concat(imageChunks)
+			cameraResponse.data.on("end", async () => {
+				const imageFile = Buffer.concat(imageChunks)			
 				
-				brotliCompress(imageFile).then((compressedImageFile: Buffer) => {
+				try {
+					const compressedImageFile = await brotliCompress(imageFile)
 					uploadCameraImage(date, cameraId.toString(), compressedImageFile, true)
-				}).catch((error) => {
+				} catch (error) {
 					uploadCameraImage(date, cameraId.toString(), imageFile, false)
-
+					
 					console.error(`${cTimestamp()} ${cLibName("gbgcamera")} ${cError(error)}`)
-				})				
+				}			
 			})
 		}).catch((error) => {
 			console.error(`${cTimestamp()} ${cLibName("gbgcamera")} ${cError(error)}`)

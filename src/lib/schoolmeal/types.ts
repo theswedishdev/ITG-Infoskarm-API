@@ -1,5 +1,3 @@
-import * as moment from "moment-timezone"
-
 declare namespace schoolmeal {
 	export namespace RawAPI {
 		export interface School {

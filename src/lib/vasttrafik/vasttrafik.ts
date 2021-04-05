@@ -3,7 +3,6 @@
  * @since 0.0.1
  * @module vasttrafik
  * @author Joel Ericsson <joel.eriksson@protonmail.com>
- * @copyright 2017-2018 Joel Ericsson <joel.eriksson@protonmail.com>
  * @license MIT
  */
 

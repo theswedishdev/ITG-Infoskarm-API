@@ -3,7 +3,6 @@
  * @since 0.0.1
  * @module vasttrafik
  * @author Joel Ericsson <joel.eriksson@protonmail.com>
- * @copyright 2017-2018 Joel Ericsson <joel.eriksson@protonmail.com>
  * @license MIT
  */
 
@@ -58,7 +57,7 @@ namespace vasttrafik {
 						shortDirection = shortDirection.substr(0, shortDirection.indexOf(","))
 					}
 	
-					const shortDirectionSlug: string = urlSlug(shortDirection)
+					const shortDirectionSlug: string = urlSlug.convert(shortDirection)
 	
 					let realtime = true
 					let date: string
